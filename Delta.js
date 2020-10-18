@@ -86,6 +86,25 @@
   };
 
 
+  /*
+      value At
+  */
+
+  ⵠ.Array.valueAt = (id,index) => {
+    let result = '';
+
+    sanitizeID(id)((id) => {
+      arrays.ⵠGet(id)((array) => {
+        result = array[index];
+      },() => {
+        console.log(`Unkown array, ID: <${ id }>`);
+      });
+    });
+
+    return result;
+  };
+
+
 
   /*
       sanitizeID
