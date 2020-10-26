@@ -7,8 +7,5 @@ as a new theme.
 [Instructions](https://github.com/DeltaBlock/DeltaBlock/wiki/Installation)
 
 ## Wiki
-* [Math](https://github.com/DeltaBlock/DeltaBlock/wiki/Math)
-* [Array](https://github.com/DeltaBlock/DeltaBlock/wiki/Array)
-* [String](https://github.com/DeltaBlock/DeltaBlock/wiki/String)
-* [Logic](https://github.com/DeltaBlock/DeltaBlock/wiki/Logic)
-* [Crypt](https://github.com/DeltaBlock/DeltaBlock/wiki/Crypt)
+[Wiki](https://github.com/DeltaBlock/DeltaBlock/wiki)
+
