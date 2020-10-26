@@ -2,7 +2,7 @@ const ⵠ = {};
 
 
 {
-  ⵠ.getDelta = (type) => ⵠ.getImage(`Icons/ⵠ/${ type }.png`);
+  ⵠ.getDelta = (type) => ⵠ.getImage(`Icons/delta/${ type }.png`);
 
   ⵠ.getImage = (path) => {
     return window
@@ -519,6 +519,7 @@ try {
       },{
         id: 'then',
         type: 'string',
+        example: "123"
       }],
       run: ({ condition , then  }) => {
         return condition ? then : '';
