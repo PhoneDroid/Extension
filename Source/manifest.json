@@ -1,0 +1,30 @@
+{
+    "id": "deltablock",
+    "extId": "deltablock",
+    "version": "1.0.0",
+    "iconURL": "deltablock/imgs/Covers/Main.png",
+    "coverURL": "deltablock/imgs/Covers/Main.png",
+    "name": {
+      "en": "ⵠBlock"
+    },
+    "description": {
+      "en": "Delta adds a variety of functions related to programming."
+    },
+    "targets": [
+      "sprites"
+    ],
+    "main": "deltablock/index.js",
+    "device": false,
+    "sortId": 0,
+    "extApiVersion": [],
+    "platform": [ "mblockpc" ],
+    "feature": [ "worker" ],
+    "homepage": "https://github.com/DeltaBlock/DeltaBlock",
+    "originVersion": "1.0.0",
+    "status": 3,
+    "updateStatus": 0,
+    "verifyStatus": 3,
+    "disable": 0,
+    "source": 1,
+    "createdByName": "JDK"
+}
