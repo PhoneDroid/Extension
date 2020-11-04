@@ -1374,6 +1374,31 @@ define(['exports'],(exports) => {
     */
 
     getInfo(){
+      const targets = [];
+
+      [
+        'arduino_leonardo',
+        'arduino_mega',
+        'arduino_mega2560',
+        'arduino_micro',
+        'arduino_nano',
+        'arduino_nano_old',
+        'arduino_uno',
+        'arduino_yun'
+      ].forEach((target) => {
+        targets.push({
+          name: target,
+          options: {
+            upload: {
+              middlewares: [{
+                name: 'arduino',
+                params: { sources: [] }
+              }]
+            }
+          }
+        });
+      });
+
       return {
         id: 'deltablock',
         version: '1.0.0',
@@ -1387,7 +1412,8 @@ define(['exports'],(exports) => {
         generatorStartBlocks: [],
         platform: ['mblockpc'],
         feature: ['worker'],
-        targets: [{
+        codeTypes: ['arduinoc'],
+        targets: [...targets,{
           name: 'sprites',
           options: {
             upload: {}

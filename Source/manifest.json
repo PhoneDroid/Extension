@@ -11,12 +11,21 @@
       "en": "Delta adds a variety of functions related to programming."
     },
     "targets": [
-      "sprites"
+      "sprites",
+      "arduino_leonardo",
+      "arduino_mega",
+      "arduino_mega2560",
+      "arduino_micro",
+      "arduino_nano",
+      "arduino_nano_old",
+      "arduino_uno",
+      "arduino_yun"
     ],
     "main": "deltablock/index.js",
     "device": false,
     "sortId": 0,
-    "extApiVersion": [],
+    "codeTypes": [ "arduinoc" ],
+		"extApiVersion": [ "1.0.3" ],
     "platform": [ "mblockpc" ],
     "feature": [ "worker" ],
     "homepage": "https://github.com/DeltaBlock/DeltaBlock",
