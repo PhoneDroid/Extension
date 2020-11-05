@@ -12,30 +12,6 @@
 
 
 /*
-    δ
-*/
-
-δ = () => {};
-
-
-/*
-    Valid
-*/
-
-  invalid = (value) => typeof value === 'undefined' || value === null;
-  valid = (value) => ! invalid(value);
-
-
-/*
-    Call
-*/
-
-optional = (value) => (success,failure = δ) => {
-  return valid(value) ? success(value) : failure();
-};
-
-
-/*
     UUID
 */
 
@@ -48,4 +24,36 @@ uuid = () => {
     };
 
   return str.replace(/[018]/g,processor);
+};
+
+
+/*
+    is Device
+*/
+
+ⵠ.isDevice = (devsprite) => {
+  const
+    devices = ⵠ.supportedDevices,
+    sprite = devsprite.tar.sprite;
+
+  ⵠ.log(sprite.name);
+
+  if(
+    devices.includes(sprite.name)&&
+    sprite.costumes_.length === 1
+  ){
+    const costume = sprite.costumes_[0];
+
+    if(
+      devices.includes(costume.name) &&
+      costume.rotationCenterX === 47 &&
+      costume.rotationCenterY === 55 &&
+      costume.size[0] === 2 &&
+      costume.size[1] === 2
+    ){
+      return true;
+    }
+  }
+
+  return false;
 };

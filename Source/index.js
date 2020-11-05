@@ -2,13 +2,62 @@ const ⵠ = {};
 
 
 {
+  /*
+      δ
+  */
+
+  δ = () => {};
+
+
+  /*
+      Valid
+  */
+
+    invalid = (value) => typeof value === 'undefined' || value === null;
+    valid = (value) => ! invalid(value);
+
+
+  /*
+      Call
+  */
+
+  optional = (value) => (success,failure = δ) => {
+    return valid(value) ? success(value) : failure();
+  };
+
+
+  /*
+      getDelta
+  */
+
   ⵠ.getDelta = (type) => ⵠ.getImage(`Icons/delta/${ type }.png`);
+
+
+  /*
+      getImage
+  */
 
   ⵠ.getImage = (path) => {
     return window
       .MbApi
       .getExtResPath(`deltablock/imgs/${ path }`,'deltablock')
   };
+
+
+  /*
+      Supported Devices
+  */
+
+  ⵠ.supportedDevices = [
+    'arduino_leonardo',
+    'arduino_mega',
+    'arduino_mega2560',
+    'arduino_micro',
+    'arduino_nano',
+    'arduino_nano_old',
+    'arduino_uno',
+    'arduino_yun'
+  ];
 }
 
 
@@ -209,6 +258,10 @@ const translations = {
     extensionName: 'ⵠ',
     extensionDescription: 'Delta adds a variety of functions related to programming.',
 
+    arduino_pin_mode: 'pin: ( [pin] ) mode: ( [mode] )',
+    arduino_pin_digital_state: 'pin: ( [pin] ) state: ( [state] )',
+    arduino_pin_to_float: 'toFloat ( [input] )',
+
     ⵠ_string: 'String',
     string_replace   : '[input] .replace ( [match] with [replacement] )',
     string_includes  : '[input] .includes ( [match] )',
@@ -256,6 +309,7 @@ const translations = {
     ⵠ_math: 'Math',
     math_min   : 'min ( [a] , [b] )',
     math_max   : 'max ( [a] , [b] )',
+    math_limit : 'limit [input] to ( [min] , [max] )',
     math_negate: '- [input]',
 
     ⵠ_logic: 'Logic',
@@ -326,14 +380,18 @@ try {
         block
     */
 
-    block({ id , type , run , state , args }){
+    block({ id , type , run , state , args , code , sections }){
       const block = {};
 
       block.id = id;
       block.type = type;
-      block.run = run;
+      block.run = run || δ;
       block.args = args;
       block.state = state;
+      block.code = code || '';
+      block.sections = sections || {};
+      block.isDevice = valid(code) || valid(sections);
+      block.getId = () => `${ this.id }_${ id }`;
 
       this.blocks.push(block);
 
@@ -350,7 +408,7 @@ try {
 
       return this
         .blocks
-        .map(({ id , type , run , state , args = [] }) => {
+        .map(({ id , type , run , state , args = [] , code , sections }) => {
           const ags = {};
 
           args.forEach(({ id , type , example }) => {
@@ -392,10 +450,166 @@ try {
 
                 return false;
               }
+            codes: {
+              arduinoc: {
+                code: code,
+                sections: sections
+              }
             }
           };
         });
     };
+  }
+
+
+  /*
+      Arduino
+  */
+
+  {
+    new Category('arduino',{
+      color: '#6BA3FF',
+      icon: 'Arduino'
+    })
+
+
+    /*
+        Pin Mode
+    */
+
+    .block({
+      id: 'pin_mode',
+      type: 'command',
+      args: [{
+        id: 'pin',
+        type: 'number',
+        example: "2"
+      },{
+        id: 'mode',
+        type: 'string',
+        example: 'output'
+      }],
+      code: `pinMode(/*{{
+        (() => {
+          let pin = this.pin;
+
+          if(/^"[\\s\\S]*"$/.test(pin))
+            pin = pin.substring(1,pin.length - 1);
+
+          let temp = parseInt(pin);
+
+          if(isNaN(temp)){
+            return 'String(' + pin + ').toFloat()';
+          } else {
+            return temp < 0 ? 0 : temp;
+          }
+        })()
+      }}*/,/*{{
+        (() => {
+          let mode = this.mode;
+
+          if(/^[a-z_][a-z0-9_]*$/i.test(mode))
+            return 'convertMode(String(' + mode + '))';
+          else {
+            mode = mode
+              .toLowerCase()
+              .substring(1,mode.length - 1);
+
+            // ⵠ.warn(mode,mode == 'in',mode == 'input');
+
+            return (mode == 'in' || mode == 'input') ? 'INPUT' : 'OUTPUT';
+          }
+        })()
+      }}*/);`,
+      sections: {
+        declare:
+          'bool convertMode(String mode){\n' +
+          '  mode.toLowerCase();\n' +
+          '  return (mode == "in" || mode == "input") ? INPUT : OUTPUT;\n' +
+          '}\n'
+      }
+    })
+
+
+    /*
+        Set Digital
+    */
+
+    .block({
+      id: 'pin_digital_state',
+      type: 'command',
+      args: [{
+        id: 'pin',
+        type: 'number',
+        example: "2"
+      },{
+        id: 'state',
+        type: 'string',
+        example: 'high'
+      }],
+      code: `digitalWrite(/*{{
+          (() => {
+            let pin = this.pin;
+
+            if(/^"[\\s\\S]*"$/.test(pin))
+              pin = pin.substring(1,pin.length - 1);
+
+            let temp = parseInt(pin);
+
+            if(isNaN(temp)){
+              return 'String(' + pin + ').toFloat()';
+            } else {
+              return temp < 0 ? 0 : temp;
+            }
+          })()
+        }}*/,/*{{
+          (() => {
+            let state = this.state;
+
+            // ⵠ.log('[' + state + ']');
+
+            switch(true){
+            case state === 'true':
+              return 'HIGH';
+            case state === 'false':
+              return 'LOW';
+            // case /^[a-z_][a-z0-9_]*$/i.test(state):
+              // return 'convertState(String(' + state + '))';
+            case /^"[\\s\\S]*"$/.test(state):
+              state = state
+                .toLowerCase()
+                .substring(1,state.length - 1);
+
+              return (state == 'high' || state == '1' || state == 'true') ? 'HIGH' : 'LOW';
+            default:
+              return 'convertState(String(' + state + '))';
+            }
+          })()
+        }}*/);`,
+      sections: {
+        declare:
+          'bool convertState(String state){\n' +
+          '  state.toLowerCase();\n' +
+          '  return (state == "true" || state == "1" || state == "high") ? HIGH : LOW;\n' +
+          '}\n'
+      }
+    })
+
+
+    /*
+        To Float
+    */
+
+    .block({
+      id: 'pin_to_float',
+      type: 'number',
+      args: [{
+        id: 'input',
+        type: 'string',
+        example: "string"
+      }],
+      code: `String(/*{ input }*/).toFloat()`
+    });
   }
 
 
@@ -465,7 +679,8 @@ try {
     .block({
       id: 'false',
       type: 'boolean',
-      run: () => false
+      run: () => false,
+      code: 'false'
     })
 
     /*
@@ -475,7 +690,8 @@ try {
     .block({
       id: 'true',
       type: 'boolean',
-      run: () => true
+      run: () => true,
+      code: 'true'
     })
 
 
@@ -501,7 +717,8 @@ try {
       }],
       run: ({ condition , then , otherwise }) => {
         return condition ? then : otherwise;
-      }
+      },
+      code: `(/*{ condition }*/) ? (/*{ then }*/) : (/*{ otherwise }*/)`
     })
 
 
@@ -523,7 +740,8 @@ try {
       }],
       run: ({ condition , then  }) => {
         return condition ? then : '';
-      }
+      },
+      code: `(/*{ condition }*/) ? (/*{ then }*/) : ''`
     })
 
     /*
@@ -544,7 +762,8 @@ try {
       }],
       run: ({ condition , otherwise }) => {
         return condition ? '' : otherwise;
-      }
+      },
+      code: `(/*{ condition }*/) ? '' : (/*{ otherwise }*/)`
     });
   }
 
@@ -1322,6 +1541,38 @@ try {
 
 
     /*
+        Limit
+    */
+
+    .block({
+      id: 'limit',
+      type: 'number',
+      args: [{
+        id: 'input',
+        type: 'number',
+        example: -2
+      },{
+        id: 'min',
+        type: 'number',
+        example: 0
+      },{
+        id: 'max',
+        type: 'number',
+        example: 5
+      }],
+      run: ({ input , min , max }) => {
+        if(input < min)
+          return min;
+
+        if(input > max)
+          return max;
+
+        return input;
+      }
+    })
+
+
+    /*
         Negate
     */
 
@@ -1376,16 +1627,7 @@ define(['exports'],(exports) => {
     getInfo(){
       const targets = [];
 
-      [
-        'arduino_leonardo',
-        'arduino_mega',
-        'arduino_mega2560',
-        'arduino_micro',
-        'arduino_nano',
-        'arduino_nano_old',
-        'arduino_uno',
-        'arduino_yun'
-      ].forEach((target) => {
+      ⵠ.supportedDevices.forEach((target) => {
         targets.push({
           name: target,
           options: {
@@ -1402,7 +1644,9 @@ define(['exports'],(exports) => {
       return {
         id: 'deltablock',
         version: '1.0.0',
-        snippets: [],
+        snippets: {
+          arduinoc: {}
+        },
         generators: [],
         translationMap: translations,
         disabledOnline: [],
@@ -1459,9 +1703,21 @@ define(['exports'],(exports) => {
         },
         onSelect: function(app,device){
           ⵠ.log('[EH]: onSelect');
+          ⵠ.log('is Device: ',ⵠ.isDevice(device));
+
+          if(ⵠ.isDevice(device))
+            app.workspace.disableBlocks(
+              ...ⵠ
+              .categories
+              .map(({ blocks }) => {
+                return blocks
+                  .filter((block) => !block.isDevice)
+                  .map((block) => `deltablock.${ block.getId() }`)
+                  .flat();
+              }).flat());
         },
-        onUnselect: function(app,{ id }){
-          ⵠ.log('[EH]: onUnselect');
+        onUnselect: function(app,device){
+          ⵠ.log('[EH]: onUnselect',device);
         },
         beforeCodeUpload: function(app,{ id }){
           ⵠ.log('[EH]: beforeCodeUpload');
@@ -1470,7 +1726,7 @@ define(['exports'],(exports) => {
           ⵠ.log('[EH]: afterCodeUpload');
         },
         onRead: function(app,{ id }){
-          ⵠ.log('[EH]: onRead');
+          // ⵠ.log('[EH]: onRead');
         },
         onSignIn: function(){
           ⵠ.log('[EH]: onSignIn');
