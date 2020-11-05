@@ -258,6 +258,7 @@ const translations = {
     extensionName: 'ⵠ',
     extensionDescription: 'Delta adds a variety of functions related to programming.',
 
+    ⵠ_arduino: 'Arduino',
     arduino_pin_mode: 'pin: ( [pin] ) mode: ( [mode] )',
     arduino_pin_digital_state: 'pin: ( [pin] ) state: ( [state] )',
     arduino_pin_to_float: 'toFloat ( [input] )',
@@ -450,6 +451,7 @@ try {
 
                 return false;
               }
+            },
             codes: {
               arduinoc: {
                 code: code,
