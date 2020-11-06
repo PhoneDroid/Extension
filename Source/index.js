@@ -218,6 +218,7 @@ const ⵠ = {};
 try {
   ⵠ.script.loadAll([
     '/libs/Utils.js',
+    '/libs/proto/Array.js',
     '/libs/proto/Map.js',
     '/libs/addressed/Addressable.js',
     '/libs/addressed/Array.js',
@@ -259,8 +260,8 @@ const translations = {
     extensionDescription: 'Delta adds a variety of functions related to programming.',
 
     ⵠ_arduino: 'Arduino',
-    arduino_pin_mode: 'pin: ( [pin] ) mode: ( [mode] )',
-    arduino_pin_digital_state: 'pin: ( [pin] ) state: ( [state] )',
+    arduino_pin_mode: 'pin(s): ( [pin] ) mode: ( [mode] )',
+    arduino_pin_digital_state: 'pin(s): ( [pin] ) state: ( [state] )',
     arduino_pin_to_float: 'toFloat ( [input] )',
 
     ⵠ_string: 'String',
@@ -336,6 +337,15 @@ try {
 
 
   /*
+      Stringify Funcs
+  */
+
+  function δFunc(func){
+    return `/*{{(() => ${ ('' + func).substring(6) })()}}*/`;
+  };
+
+
+  /*
       Category
   */
 
@@ -391,8 +401,10 @@ try {
       block.state = state;
       block.code = code || '';
       block.sections = sections || {};
-      block.isDevice = valid(code) || valid(sections);
       block.getId = () => `${ this.id }_${ id }`;
+
+      block.isDevice = valid(code) || valid(sections);
+      block.isSprite = valid(run);
 
       this.blocks.push(block);
 
@@ -484,48 +496,64 @@ try {
       type: 'command',
       args: [{
         id: 'pin',
-        type: 'number',
+        type: 'string',
         example: "2"
       },{
         id: 'mode',
         type: 'string',
         example: 'output'
       }],
-      code: `pinMode(/*{{
-        (() => {
-          let pin = this.pin;
+      code: δFunc(() => {
+        let
+          code = '',
+          pin = this.pin,
+          mode = this.mode;
 
-          if(/^"[\\s\\S]*"$/.test(pin))
-            pin = pin.substring(1,pin.length - 1);
+        false && ⵠ.warn(`
+          pin: [${ pin }]
+          mode: [${ mode }]
+        `);
 
-          let temp = parseInt(pin);
+        const make = (pin) => {
+          code += `pinMode(${ pin },${ mode });\n`;
+        };
 
-          if(isNaN(temp)){
-            return 'String(' + pin + ').toFloat()';
-          } else {
-            return temp < 0 ? 0 : temp;
-          }
-        })()
-      }}*/,/*{{
-        (() => {
-          let mode = this.mode;
 
-          if(/^[a-z_][a-z0-9_]*$/i.test(mode))
-            return 'convertMode(String(' + mode + '))';
-          else {
-            mode = mode
-              .toLowerCase()
-              .substring(1,mode.length - 1);
+        /*  State  */
 
-            // ⵠ.warn(mode,mode == 'in',mode == 'input');
+        if(/^[a-z_][a-z0-9_]*$/i.test(mode))
+          mode = 'toMode(String(' + mode + '))';
+        else {
+          mode = mode
+            .toLowerCase()
+            .substring(1,mode.length - 1);
 
-            return (mode == 'in' || mode == 'input') ? 'INPUT' : 'OUTPUT';
-          }
-        })()
-      }}*/);`,
+          mode = (mode == 'in' || mode == 'input') ? 'INPUT' : 'OUTPUT';
+        }
+
+
+        /*  Pin  */
+
+        if(pin === 'None')
+          return '';
+
+        if(/^"[\s\S]*"$/.test(pin)){
+          if(/^"(\d+,)*(\d+)"$/.test(pin))
+            pin
+            .substring(1,pin.length - 1)
+            .split(',')
+            .filter((pin) => /\d+/.test(pin))
+            .unique()
+            .forEach(make);
+        } else {
+          make(`String(${ pin }).toInt()`);
+        }
+
+        return code;
+      }),
       sections: {
         declare:
-          'bool convertMode(String mode){\n' +
+          'bool toMode(String mode){\n' +
           '  mode.toLowerCase();\n' +
           '  return (mode == "in" || mode == "input") ? INPUT : OUTPUT;\n' +
           '}\n'
@@ -542,55 +570,72 @@ try {
       type: 'command',
       args: [{
         id: 'pin',
-        type: 'number',
+        type: 'string',
         example: "2"
       },{
         id: 'state',
         type: 'string',
         example: 'high'
       }],
-      code: `digitalWrite(/*{{
-          (() => {
-            let pin = this.pin;
+      code: δFunc(() => {
+        let
+          code = '',
+          pin = this.pin,
+          state = this.state;
 
-            if(/^"[\\s\\S]*"$/.test(pin))
-              pin = pin.substring(1,pin.length - 1);
+        false && ⵠ.warn(`
+          pin: [${ pin }]
+          state: [${ state }]
+        `);
 
-            let temp = parseInt(pin);
+        const make = (pin) => {
+          code += `digitalWrite(${ pin },${ state });\n`;
+        };
 
-            if(isNaN(temp)){
-              return 'String(' + pin + ').toFloat()';
-            } else {
-              return temp < 0 ? 0 : temp;
-            }
-          })()
-        }}*/,/*{{
-          (() => {
-            let state = this.state;
 
-            // ⵠ.log('[' + state + ']');
+        /*  State  */
 
-            switch(true){
-            case state === 'true':
-              return 'HIGH';
-            case state === 'false':
-              return 'LOW';
-            // case /^[a-z_][a-z0-9_]*$/i.test(state):
-              // return 'convertState(String(' + state + '))';
-            case /^"[\\s\\S]*"$/.test(state):
-              state = state
-                .toLowerCase()
-                .substring(1,state.length - 1);
+        switch(true){
+        case state === 'true':
+          state = 'HIGH';
+          break;
+        case state === 'false':
+          state = 'LOW';
+          break;
+        case /^"[\s\S]*"$/.test(state):
+          state = state
+            .toLowerCase()
+            .substring(1,state.length - 1);
 
-              return (state == 'high' || state == '1' || state == 'true') ? 'HIGH' : 'LOW';
-            default:
-              return 'convertState(String(' + state + '))';
-            }
-          })()
-        }}*/);`,
+          state = (state == 'high' || state == '1' || state == 'true') ? 'HIGH' : 'LOW';
+          break;
+        default:
+          state = 'toState(String(' + state + '))';
+        }
+
+
+        /*  Pin  */
+
+        if(pin === 'None')
+          return '';
+
+        if(/^"[\s\S]*"$/.test(pin)){
+          if(/^"(\d+,)*(\d+)"$/.test(pin))
+            pin
+            .substring(1,pin.length - 1)
+            .split(',')
+            .filter((pin) => /\d+/.test(pin))
+            .unique()
+            .forEach(make);
+        } else {
+          make(`String(${ pin }).toInt()`);
+        }
+
+        return code;
+      }),
       sections: {
         declare:
-          'bool convertState(String state){\n' +
+          'bool toState(String state){\n' +
           '  state.toLowerCase();\n' +
           '  return (state == "true" || state == "1" || state == "high") ? HIGH : LOW;\n' +
           '}\n'
@@ -1714,6 +1759,16 @@ define(['exports'],(exports) => {
               .map(({ blocks }) => {
                 return blocks
                   .filter((block) => !block.isDevice)
+                  .map((block) => `deltablock.${ block.getId() }`)
+                  .flat();
+              }).flat());
+          else
+            app.workspace.disableBlocks(
+              ...ⵠ
+              .categories
+              .map(({ blocks }) => {
+                return blocks
+                  .filter((block) => !block.isSprite)
                   .map((block) => `deltablock.${ block.getId() }`)
                   .flat();
               }).flat());
