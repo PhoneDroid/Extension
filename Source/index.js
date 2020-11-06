@@ -261,8 +261,8 @@ const translations = {
     extensionDescription: 'Delta adds a variety of functions related to programming.',
 
     ⵠ_arduino: 'Arduino',
-    arduino_pin_mode: 'pin(s): ( [pin] ) mode: ( [mode] )',
-    arduino_pin_digital_state: 'pin(s): ( [pin] ) state: ( [state] )',
+    arduino_pin_mode: 'set Mode of ( [pin] ) to ( [mode] )',
+    arduino_pin_digital_state: 'set State of ( [pin] ) to ( [state] )',
     arduino_pin_to_float: 'toFloat ( [input] )',
 
     ⵠ_string: 'String',
@@ -1638,7 +1638,8 @@ try {
       }],
       run: ({ a , b }) => {
         return a > b ? b : a;
-      }
+      },
+      code: `min(/*{ a }*/,/*{ b }*/)`
     })
 
 
@@ -1660,7 +1661,8 @@ try {
       }],
       run: ({ a , b }) => {
         return a > b ? a : b;
-      }
+      },
+      code: `max(/*{ a }*/,/*{ b }*/)`
     })
 
 
@@ -1692,7 +1694,8 @@ try {
           return max;
 
         return input;
-      }
+      },
+      code: `contrain(/*{ input }*/,/*{ min }*/,/*{ max }*/)`
     })
 
 
@@ -1710,7 +1713,8 @@ try {
       }],
       run: ({ input }) => {
         return - input;
-      }
+      },
+      code: `-(/*{ input }*/)`
     });
   }
 
