@@ -4,7 +4,7 @@ it adds a variety of programming related blocks as well
 as a new theme.
 
 ## Releases
-[Releases](https://github.com/DeltaBlock/DeltaBlock/Releases)
+[Releases](https://github.com/DeltaBlock/DeltaBlock/tree/main/Releases)
 
 ## Installation
 [Instructions](https://github.com/DeltaBlock/DeltaBlock/wiki/Installation)
