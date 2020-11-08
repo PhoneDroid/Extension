@@ -194,7 +194,6 @@ const ⵠ = {};
   ⵠ.script = {};
 
   ⵠ.script.load = (path) => (callback) => {
-    const
     try {
       const
         script = document.createElement('script'),

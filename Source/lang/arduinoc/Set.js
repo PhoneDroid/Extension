@@ -18,3 +18,5 @@
   */
 
   lang.set_class = '';
+
+}
