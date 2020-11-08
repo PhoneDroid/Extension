@@ -27,6 +27,13 @@ const ⵠ = {};
 
 
   /*
+      Is
+  */
+
+  isFunc = (value) => typeof value === 'function';
+
+
+  /*
       getDelta
   */
 
@@ -188,29 +195,33 @@ const ⵠ = {};
 
   ⵠ.script.load = (path) => (callback) => {
     const
-      script = document.createElement('script'),
-      url = window.MbApi.getExtResPath(`deltablock/${ path }`,'deltablock');
+    try {
+      const
+        script = document.createElement('script'),
+        url = window.MbApi.getExtResPath(`deltablock/${ path }`,'deltablock');
 
-    script.type = 'application/javascript';
-    script.src = url;
-    script.addEventListener('load',callback);
+      script.type = 'application/javascript';
+      script.src = url;
+      script.addEventListener('load',callback);
 
-    document.head.appendChild(script);
+      document.head.appendChild(script);
+    } catch (e) { ⵠ.error(e); }
   };
 
   ⵠ.script.loadAll = (paths = []) => (callback) => {
+    try {
+      function next(){
+        let path = paths.shift();
 
-    function next(){
-      let path = paths.shift();
-
-      if(path){
-        ⵠ.script.load(path)(next);
-      } else {
-        callback();
+        if(path){
+          ⵠ.script.load(path)(next);
+        } else {
+          callback();
+        }
       }
-    }
 
-    next();
+      next();
+    } catch (e) { ⵠ.error(e); }
   };
 }
 
@@ -220,11 +231,16 @@ try {
     '/libs/Utils.js',
     '/libs/proto/Array.js',
     '/libs/proto/Map.js',
+    '/libs/Console.js',
     '/libs/addressed/Addressable.js',
     '/libs/addressed/Array.js',
     '/libs/addressed/Set.js',
     '/libs/addressed/Map.js',
-    '/libs/Flow.js'
+    '/libs/Flow.js',
+    '/lang/arduinoc/Lang.js',
+    '/lang/arduinoc/Var.js',
+    '/lang/arduinoc/Array.js',
+    '/lang/arduinoc/Set.js'
   ])(() => {
     ⵠ.log('All Dependencies Loaded');
 
@@ -263,6 +279,9 @@ const translations = {
     arduino_pin_mode: 'set Mode of ( [pin] ) to ( [mode] )',
     arduino_pin_digital_state: 'set State of ( [pin] ) to ( [state] )',
     arduino_pin_to_float: 'toFloat ( [input] )',
+    arduino_var_new: '[type] [name]',
+    arduino_var_set: '[name] = [value]',
+    arduino_var_get: '[name]',
 
     ⵠ_string: 'String',
     string_replace   : '[input] .replace ( [match] with [replacement] )',
@@ -323,7 +342,17 @@ const translations = {
 
     ⵠ_flow: 'Flow',
     flow_event: 'on [event]',
-    flow_call : 'call [event]'
+    flow_call : 'call [event]',
+
+    variable_type_int: "Int",
+    variable_type_bool: "Bool",
+    variable_type_byte: "Byte",
+    variable_type_char: "Char",
+    variable_type_long: "Long",
+    variable_type_short: "Short",
+    variable_type_float: "Float",
+    variable_type_double: "Double",
+    variable_type_string: "String"
   }
 };
 
@@ -344,6 +373,8 @@ try {
     return `/*{{(() => ${ ('' + func).substring(6) })()}}*/`;
   };
 
+  const δRefer = (value) => isFunc(value) ? δFunc(value) : value;
+
 
   /*
       Category
@@ -352,6 +383,7 @@ try {
   class Category {
     constructor(id,{ color , icon }){
       this.blocks = [];
+      this.menus = {};
       this.id = id;
       this.color = color;
 
@@ -369,7 +401,9 @@ try {
     export(){
       const { id , color , icon } = this;
 
-      const blocks = this.exportBlocks();
+      const
+        blocks = this.exportBlocks(),
+        menus = this.menus;
 
       return {
         name: `ⵠ_${ id }`,
@@ -381,8 +415,8 @@ try {
           height: 26,
           src: icon
         } : null),
-        menus: {},
-        blocks
+        blocks,
+        menus
       };
     };
 
@@ -391,7 +425,7 @@ try {
         block
     */
 
-    block({ id , type , run , state , args , code , sections }){
+    block({ id , type , run , state , args , code , sections = {} }){
       const block = {};
 
       block.id = id;
@@ -399,16 +433,28 @@ try {
       block.run = run || δ;
       block.args = args;
       block.state = state;
-      block.code = code || '';
-      block.sections = sections || {};
+      block.code = δRefer(code) || '';
       block.getId = () => `${ this.id }_${ id }`;
 
-      block.isDevice = valid(code) || valid(sections);
+      block.sections = {
+        declare: δRefer(sections.declare)
+      };
+
+      block.isDevice = valid(code) || Object.keys(sections).length > 0;
       block.isSprite = valid(run);
 
       this.blocks.push(block);
 
       return this;
+    };
+
+
+    /*
+        Menu
+    */
+
+    menu(type,items){
+      this.menus[type] = items;
     };
 
 
@@ -424,9 +470,10 @@ try {
         .map(({ id , type , run , state , args = [] , code , sections }) => {
           const ags = {};
 
-          args.forEach(({ id , type , example }) => {
+          args.forEach(({ id , type , example , menu }) => {
             ags[id] = {
-              type: type,
+              type,
+              menu,
               defaultValue: example
             };
           });
@@ -656,7 +703,104 @@ try {
         example: "string"
       }],
       code: `String(/*{ input }*/).toFloat()`
-    });
+    })
+
+
+    /*
+        new Var
+    */
+
+    .block({
+      id: 'var_new',
+      type: 'command',
+      args: [{
+        id: 'type',
+        type: 'fieldMenu',
+        menu: 'variable_type',
+        example: "bool"
+      },{
+        id: 'name',
+        type: 'string',
+        example: "someVariable"
+      }],
+      code: () => ArduinoC.var_new(this)
+
+    })
+
+
+    /*
+        set Var
+    */
+
+    .block({
+      id: 'var_set',
+      type: 'command',
+      args: [{
+        id: 'name',
+        type: 'string',
+        example: "someVariable"
+      },{
+        id: 'value',
+        type: 'string',
+        example: "someValue"
+      }],
+      code: () => ArduinoC.var_set(this),
+      sections: {
+        declare: () => ArduinoC.var_types
+      }
+    })
+
+
+    /*
+        get Var
+    */
+
+    .block({
+      id: 'var_get',
+      type: 'string',
+      args: [{
+        id: 'name',
+        type: 'string',
+        example: "someVariable"
+      }],
+      code: () => ArduinoC.var_get(this)
+    })
+
+
+    /*
+        Variable Types
+    */
+
+    .menu('variable_type',[
+      {
+        text: 'variable_type_bool',
+        value: 'bool'
+      },{
+        text: 'variable_type_byte',
+        value: 'byte'
+      },{
+        text: 'variable_type_char',
+        value: 'char'
+      },{
+        text: 'variable_type_double',
+        value: 'double'
+      },{
+        text: 'variable_type_float',
+        value: 'float'
+      },{
+        text: 'variable_type_int',
+        value: 'int'
+      },{
+        text: 'variable_type_long',
+        value: 'long'
+      },{
+        text: 'variable_type_short',
+        value: 'short'
+      },{
+        text: 'variable_type_string',
+        value: 'String'
+      }
+    ]);
   }
 
 
@@ -1246,6 +1390,9 @@ try {
       type: 'command',
       run: () => {
         ⵠ.Set.clearAll();
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1264,6 +1411,9 @@ try {
       }],
       run: ({ set }) => {
         ⵠ.Set.new(set);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1286,6 +1436,9 @@ try {
       }],
       run: ({ set , init }) => {
         ⵠ.Set.init(set,init);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1308,6 +1461,9 @@ try {
       }],
       run: ({ set , value }) => {
         ⵠ.Set.add(set,value);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1330,6 +1486,9 @@ try {
       }],
       run: ({ set , value }) => {
         ⵠ.Set.remove(set,value);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1348,6 +1507,9 @@ try {
       }],
       run: ({ set }) => {
         ⵠ.Set.clear(set);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1366,6 +1528,9 @@ try {
       }],
       run: ({ set }) => {
         return ⵠ.Set.size(set);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1388,6 +1553,9 @@ try {
       }],
       run: ({ set , index }) => {
         return ⵠ.Set.valueAt(set,index);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     })
 
@@ -1410,6 +1578,9 @@ try {
       }],
       run: ({ set , value }) => {
         return ⵠ.Set.contains(set,value);
+      },
+      sections: {
+        declare: () => ArduinoC.set_class
       }
     });
   }
