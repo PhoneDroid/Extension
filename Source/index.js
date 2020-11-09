@@ -1,4 +1,4 @@
-const ⵠ = {};
+﻿const ⵠ = {};
 
 
 {
@@ -230,7 +230,6 @@ try {
     '/libs/Utils.js',
     '/libs/proto/Array.js',
     '/libs/proto/Map.js',
-    '/libs/Console.js',
     '/libs/addressed/Addressable.js',
     '/libs/addressed/Array.js',
     '/libs/addressed/Set.js',
