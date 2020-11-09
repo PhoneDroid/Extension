@@ -89,7 +89,7 @@
 
     name = namify(name);
 
-    return `${ name } = cast(${ name },${ value })`;
+    return `${ name } = cast(${ name },${ value });`;
   };
 
 

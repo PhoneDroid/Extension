@@ -591,6 +591,19 @@ try {
             .filter((pin) => /\d+/.test(pin))
             .unique()
             .forEach(make);
+          else
+          if(/^"\d-\d"$/.test(pin)){
+            const [ f , t ] = pin
+              .substring(1,pin.length - 1)
+              .split('-');
+
+            const
+              to = parseInt(t),
+              from = parseInt(f);
+
+            for(let c = from;c <= to;c++)
+              make(c);
+          }
         } else {
           make(`String(${ pin }).toInt()`);
         }
