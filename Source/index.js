@@ -1,4 +1,4 @@
-﻿const ⵠ = {};
+const ⵠ = {};
 
 
 {
@@ -65,6 +65,22 @@
     'arduino_uno',
     'arduino_yun'
   ];
+
+
+  /*
+      UUID
+  */
+
+  uuid = () => {
+    const
+      str = ([1e7]+-1e3+-4e3+-8e3+-1e11),
+      processor = (c) => {
+        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4)
+          .toString(16);
+      };
+
+    return str.replace(/[018]/g,processor);
+  };
 }
 
 
@@ -280,6 +296,7 @@ const translations = {
     arduino_var_new: '[type] [name]',
     arduino_var_set: '[name] = [value]',
     arduino_var_get: '[name]',
+    arduino_var_for: 'from: ( [from] ) to: ( [to] ) index: ( [index] )',
 
     ⵠ_string: 'String',
     string_replace   : '[input] .replace ( [match] with [replacement] )',
@@ -350,7 +367,15 @@ const translations = {
     variable_type_short: "Short",
     variable_type_float: "Float",
     variable_type_double: "Double",
-    variable_type_string: "String"
+    variable_type_string: "String",
+
+    assignment_type_plus: "+=",
+    assignment_type_minus: "-=",
+    assignment_type_minus_reversed: "=-",
+    assignment_type_multiply: "*=",
+    assignment_type_divide: "/=",
+    assignment_type_mod: "%=",
+    assignment_type_power: "^="
   }
 };
 
@@ -453,6 +478,25 @@ try {
 
     menu(type,items){
       this.menus[type] = items;
+
+      return this;
+    };
+
+
+    /*
+        Label
+    */
+
+    label(name){
+      const id = uuid();
+
+      this.block({
+        id: id,
+        type: 'button'
+      });
+
+      translations['en'][`${ this.id }_${ id }`] = name;
+      return this;
     };
 
 
@@ -482,7 +526,7 @@ try {
             gap: 12,
             codes: {},
             hidden: false,
-            branchCount: 0,
+            branchCount: type === 'conditional' ? 1 : 0,
             platform: ['mblockpc'],
             blockState: state,
             checkboxInFlyout: false,
@@ -530,6 +574,13 @@ try {
       color: '#6BA3FF',
       icon: 'Arduino'
     })
+
+
+    /*
+        PIN
+    */
+
+    .label('Pin:')
 
 
     /*
@@ -701,6 +752,14 @@ try {
     })
 
 
+
+    /*
+        MATH
+    */
+
+    .label('Math')
+
+
     /*
         To Float
     */
@@ -715,6 +774,14 @@ try {
       }],
       code: `String(/*{ input }*/).toFloat()`
     })
+
+
+
+    /*
+        VARIABLE
+    */
+
+    .label('Variable:')
 
 
     /*
@@ -732,49 +799,10 @@ try {
       },{
         id: 'name',
         type: 'string',
-        example: "someVariable"
+        example: "variable"
       }],
       code: () => ArduinoC.var_new(this)
 
-    })
-
-
-    /*
-        set Var
-    */
-
-    .block({
-      id: 'var_set',
-      type: 'command',
-      args: [{
-        id: 'name',
-        type: 'string',
-        example: "someVariable"
-      },{
-        id: 'value',
-        type: 'string',
-        example: "someValue"
-      }],
-      code: () => ArduinoC.var_set(this),
-      sections: {
-        declare: () => ArduinoC.var_types
-      }
-    })
-
-
-    /*
-        get Var
-    */
-
-    .block({
-      id: 'var_get',
-      type: 'string',
-      args: [{
-        id: 'name',
-        type: 'string',
-        example: "someVariable"
-      }],
-      code: () => ArduinoC.var_get(this)
     })
 
 
@@ -811,7 +839,136 @@ try {
         text: 'variable_type_string',
         value: 'String'
       }
-    ]);
+    ])
+
+
+    /*
+        set Var
+    */
+
+    .block({
+      id: 'var_set',
+      type: 'command',
+      args: [{
+        id: 'name',
+        type: 'string',
+        example: "variable"
+      },{
+        id: 'value',
+        type: 'string',
+        example: "value"
+      }],
+      code: () => ArduinoC.var_set(this),
+      sections: {
+        declare: () => ArduinoC.var_types
+      }
+    })
+
+
+    /*
+        assign Var
+    */
+
+    .block({
+      id: 'var_assign',
+      type: 'command',
+      args: [{
+        id: 'name',
+        type: 'string',
+        example: "variable"
+      },{
+        id: 'operator',
+        type: 'fieldMenu',
+        menu: 'assignment_types',
+        example: "plus"
+      },{
+        id: 'value',
+        type: 'string',
+        example: "value"
+      }],
+      code: () => ArduinoC.var_assign(this),
+      sections: {
+        declare: () => ArduinoC.var_types
+      }
+    })
+
+
+    /*
+        Assigment Types
+    */
+
+    .menu('assignment_types',[
+      {
+        text: 'assignment_type_plus',
+        value: 'plus'
+      },{
+        text: 'assignment_type_minus',
+        value: 'minus'
+      },{
+        text: 'assignment_type_minus_reversed',
+        value: 'minus_reverse'
+      },{
+        text: 'assignment_type_multiply',
+        value: 'multiply'
+      },{
+        text: 'assignment_type_divide',
+        value: 'divide'
+      },{
+        text: 'assignment_type_mod',
+        value: 'mod'
+      },{
+        text: 'assignment_type_power',
+        value: 'power'
+      }
+    ])
+
+
+    /*
+        get Var
+    */
+
+    .block({
+      id: 'var_get',
+      type: 'string',
+      args: [{
+        id: 'name',
+        type: 'string',
+        example: "variable"
+      }],
+      code: () => ArduinoC.var_get(this)
+    })
+
+
+
+    /*
+        FLOW
+    */
+
+    .label('Flow:')
+
+
+    /*
+        For
+    */
+
+    .block({
+      id: 'var_for',
+      type: 'conditional',
+      args: [{
+        id: 'from',
+        type: 'number',
+        example: "0"
+      },{
+        id: 'to',
+        type: 'number',
+        example: "10"
+      },{
+        id: 'index',
+        type: 'string',
+        example: "index"
+      }],
+      code: δFunc(() => ArduinoC.var_for(this)) + '{\n\n  /*{ $BRANCH1 }*/\n}'
+    });
   }
 
 
