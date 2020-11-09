@@ -295,6 +295,7 @@ const translations = {
     arduino_pin_to_float: 'toFloat ( [input] )',
     arduino_var_new: '[type] [name]',
     arduino_var_set: '[name] = [value]',
+    arduino_var_assign: '[name] [operator] [value]',
     arduino_var_get: '[name]',
     arduino_var_for: 'from: ( [from] ) to: ( [to] ) index: ( [index] )',
 
