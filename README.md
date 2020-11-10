@@ -9,6 +9,6 @@ as a new theme.
 ## Installation
 [Instructions](https://github.com/DeltaBlock/DeltaBlock/wiki/Installation)
 
-## Wiki
-[Wiki](https://github.com/DeltaBlock/DeltaBlock/wiki)
+## Wiki (temporary)
+[Wiki](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Math)
 
