@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Math</title>
+    <title>Map</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
       :root {
-        --selection: #6BA3FF;
-        --dark: #5886D3;
-        --light: #6091EA;
+        --selection: #9958D3;
+        --light: #AC60EA;
+        --dark: #9958D3;
       }
 
       ::selection {
@@ -113,27 +113,52 @@
   <body>
     <div class='main'>
       <div class='title'>
-        <h1>Math</h1>
+        <h1>Map</h1>
       </div>
-      <div class='block' id='block_min'>
-        <h3>Min</h3>
-        <div>Returns the smaller of the two values.</div>
-        <img src='../assets/blocks/Math/Min.png'>
+      <div class='block' id='block_clear_all'>
+        <h3>Clear All</h3>
+        <div>Clears all existing maps.</div>
+        <img src='../assets/blocks/Map/Clear All.png'>
       </div>
-      <div class='block' id='block_max'>
-        <h3>Max</h3>
-        <div>Returns the bigger of the two values.</div>
-        <img src='../assets/blocks/Math/Max.png'>
+      <div class='block' id='block_clear'>
+        <h3>Clear</h3>
+        <div>Clears the specified map.</div>
+        <img src='../assets/blocks/Map/Clear.png'>
       </div>
-      <div class='block' id='block_negate'>
-        <h3>Negate</h3>
-        <div>Returns the negation of the value.</div>
-        <img src='../assets/blocks/Math/Negate.png'>
+      <div class='block' id='block_new'>
+        <h3>New</h3>
+        <div>Creates a new map with the specified name.<br>(Name can only contain unicode letters, _, -, 0-9)</div>
+        <img src='../assets/blocks/Map/New.png'>
       </div>
-      <div class='block' id='block_limit'>
-        <h3>Limit</h3>
-        <div>Returns the input if it lies within the bounds,<br>otherwise the closer lower / upper bounds.</div>
-        <img src='../assets/blocks/Math/Limit.png'>
+      <div class='block' id='block_new_with'>
+        <h3>New With</h3>
+        <div>Does the same as New, while adding the given key-value pairs.<br>(key-value pairs are seperated with a <b>,</b>)<br>(keys are enclosed in <b>[]:</b>)</div>
+        <img src='../assets/blocks/Map/New With.png'>
+      </div>
+      <div class='block' id='block_put'>
+        <h3>Put</h3>
+        <div>Puts a value with the specified key into the map.</div>
+        <img src='../assets/blocks/Map/Put.png'>
+      </div>
+      <div class='block' id='block_delete'>
+        <h3>Delete</h3>
+        <div>Deletes the value under the specified key.</div>
+        <img src='../assets/blocks/Map/Delete.png'>
+      </div>
+      <div class='block' id='block_size'>
+        <h3>Size</h3>
+        <div>Returns the size of the map.</div>
+        <img src='../assets/blocks/Map/Size.png'>
+      </div>
+      <div class='block' id='block_has'>
+        <h3>Has</h3>
+        <div>Returns whether or not the map contains the specified key.</div>
+        <img src='../assets/blocks/Map/Has.png'>
+      </div>
+      <div class='block' id='block_get'>
+        <h3>Get</h3>
+        <div>Returns the value at the specified key.</div>
+        <img src='../assets/blocks/Map/Get.png'>
       </div>
     </div>
   </body>

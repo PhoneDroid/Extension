@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Math</title>
+    <title>Array</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
       :root {
-        --selection: #6BA3FF;
-        --dark: #5886D3;
-        --light: #6091EA;
+        --selection: #D37C58;
+        --light: #EA8C60;
+        --dark: #D37C58;
       }
 
       ::selection {
@@ -113,27 +113,52 @@
   <body>
     <div class='main'>
       <div class='title'>
-        <h1>Math</h1>
+        <h1>Array</h1>
       </div>
-      <div class='block' id='block_min'>
-        <h3>Min</h3>
-        <div>Returns the smaller of the two values.</div>
-        <img src='../assets/blocks/Math/Min.png'>
+      <div class='block' id='block_clear_all'>
+        <h3>Clear All</h3>
+        <div>Clears all existing arrays.</div>
+        <img src='../assets/blocks/Array/Clear All.png'>
       </div>
-      <div class='block' id='block_max'>
-        <h3>Max</h3>
-        <div>Returns the bigger of the two values.</div>
-        <img src='../assets/blocks/Math/Max.png'>
+      <div class='block' id='block_new'>
+        <h3>New</h3>
+        <div>Creates a new array with the specified name.<br>(Name can only contain unicode letters, _, -, 0-9)</div>
+        <img src='../assets/blocks/Array/New.png'>
       </div>
-      <div class='block' id='block_negate'>
-        <h3>Negate</h3>
-        <div>Returns the negation of the value.</div>
-        <img src='../assets/blocks/Math/Negate.png'>
+      <div class='block' id='block_push'>
+        <h3>Add</h3>
+        <div>Pushes a value onto the end of the array.</div>
+        <img src='../assets/blocks/Array/Push.png'>
       </div>
-      <div class='block' id='block_limit'>
-        <h3>Limit</h3>
-        <div>Returns the input if it lies within the bounds,<br>otherwise the closer lower / upper bounds.</div>
-        <img src='../assets/blocks/Math/Limit.png'>
+      <div class='block' id='block_pop'>
+        <h3>Pop</h3>
+        <div>Removes and returns the last value of the array.</div>
+        <img src='../assets/blocks/Array/Pop.png'>
+      </div>
+      <div class='block' id='block_shift'>
+        <h3>Shift</h3>
+        <div>Removes and returns the first value of the array.</div>
+        <img src='../assets/blocks/Array/Shift.png'>
+      </div>
+      <div class='block' id='block_unshift'>
+        <h3>Unshift</h3>
+        <div>Adds the value to the start of the array.</div>
+        <img src='../assets/blocks/Array/Unshift.png'>
+      </div>
+      <div class='block' id='block_value_at'>
+        <h3>Value At</h3>
+        <div>Returns the value at the specified index.</div>
+        <img src='../assets/blocks/Array/Value At.png'>
+      </div>
+      <div class='block' id='block_length'>
+        <h3>Length</h3>
+        <div>Returns the length of the array.</div>
+        <img src='../assets/blocks/Array/Length.png'>
+      </div>
+      <div class='block' id='block_concat'>
+        <h3>Concat</h3>
+        <div>The first and second arrays are combined into the third.</div>
+        <img src='../assets/blocks/Array/Concat.png'>
       </div>
     </div>
   </body>

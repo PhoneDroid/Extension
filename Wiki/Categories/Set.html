@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Math</title>
+    <title>Set</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
       :root {
-        --selection: #6BA3FF;
-        --dark: #5886D3;
-        --light: #6091EA;
+        --selection: #D3B458;
+        --light: #EACA60;
+        --dark: #D3B458;
       }
 
       ::selection {
@@ -113,27 +113,52 @@
   <body>
     <div class='main'>
       <div class='title'>
-        <h1>Math</h1>
+        <h1>Set</h1>
       </div>
-      <div class='block' id='block_min'>
-        <h3>Min</h3>
-        <div>Returns the smaller of the two values.</div>
-        <img src='../assets/blocks/Math/Min.png'>
+      <div class='block' id='block_clear_all'>
+        <h3>Clear All</h3>
+        <div>Clears all existing sets.</div>
+        <img src='../assets/blocks/Set/Clear All.png'>
       </div>
-      <div class='block' id='block_max'>
-        <h3>Max</h3>
-        <div>Returns the bigger of the two values.</div>
-        <img src='../assets/blocks/Math/Max.png'>
+      <div class='block' id='block_clear'>
+        <h3>Clear</h3>
+        <div>Clears the specified set.</div>
+        <img src='../assets/blocks/Set/Clear.png'>
       </div>
-      <div class='block' id='block_negate'>
-        <h3>Negate</h3>
-        <div>Returns the negation of the value.</div>
-        <img src='../assets/blocks/Math/Negate.png'>
+      <div class='block' id='block_new'>
+        <h3>New</h3>
+        <div>Creates a new set with the specified name.<br>(Name can only contain unicode letters, _, -, 0-9)</div>
+        <img src='../assets/blocks/Set/New.png'>
       </div>
-      <div class='block' id='block_limit'>
-        <h3>Limit</h3>
-        <div>Returns the input if it lies within the bounds,<br>otherwise the closer lower / upper bounds.</div>
-        <img src='../assets/blocks/Math/Limit.png'>
+      <div class='block' id='block_new_with'>
+        <h3>New With</h3>
+        <div>Does the same as New, while adding the given values.<br>(Values are seperated with a <b>,</b>)<br>(keys are enclosed in <b>[]:</b>)</div>
+        <img src='../assets/blocks/Set/New With.png'>
+      </div>
+      <div class='block' id='block_add'>
+        <h3>Add</h3>
+        <div>Adds a value to the set.</div>
+        <img src='../assets/blocks/Set/Add.png'>
+      </div>
+      <div class='block' id='block_remove'>
+        <h3>Remove</h3>
+        <div>Removes the specified values from the set.</div>
+        <img src='../assets/blocks/Set/Remove.png'>
+      </div>
+      <div class='block' id='block_size'>
+        <h3>Size</h3>
+        <div>Returns the size of the set.</div>
+        <img src='../assets/blocks/Set/Size.png'>
+      </div>
+      <div class='block' id='block_contains'>
+        <h3>Contains</h3>
+        <div>Returns whether or not the set contains the specified value.</div>
+        <img src='../assets/blocks/Set/Contains.png'>
+      </div>
+      <div class='block' id='block_value_at'>
+        <h3>Value At</h3>
+        <div>Returns the value at the specified index.</div>
+        <img src='../assets/blocks/Set/Value At.png'>
       </div>
     </div>
   </body>

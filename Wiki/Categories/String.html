@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Math</title>
+    <title>String</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
       :root {
-        --selection: #6BA3FF;
-        --dark: #5886D3;
-        --light: #6091EA;
+        --selection: #FF6BAD;
+        --light: #EA609C;
+        --dark: #D35890;
       }
 
       ::selection {
@@ -113,27 +113,27 @@
   <body>
     <div class='main'>
       <div class='title'>
-        <h1>Math</h1>
+        <h1>String</h1>
       </div>
-      <div class='block' id='block_min'>
-        <h3>Min</h3>
-        <div>Returns the smaller of the two values.</div>
-        <img src='../assets/blocks/Math/Min.png'>
+      <div class='block' id='block_replace'>
+        <h3>Replace</h3>
+        <div>Return the input with all matches replaced</div>
+        <img src='../assets/blocks/String/Replace.png'>
       </div>
-      <div class='block' id='block_max'>
-        <h3>Max</h3>
-        <div>Returns the bigger of the two values.</div>
-        <img src='../assets/blocks/Math/Max.png'>
+      <div class='block' id='block_substring'>
+        <h3>Substring</h3>
+        <div>Returns a substring of the input starting at [from] to [to].<br>[from] is inclusive<br>[to] is exclusive</div>
+        <img src='../assets/blocks/String/Substring.png'>
       </div>
-      <div class='block' id='block_negate'>
-        <h3>Negate</h3>
-        <div>Returns the negation of the value.</div>
-        <img src='../assets/blocks/Math/Negate.png'>
+      <div class='block' id='block_index_of'>
+        <h3>Index Of</h3>
+        <div>Returns the starting position of the match in the input,<br>otherwise returns <b>-1</b>.</div>
+        <img src='../assets/blocks/String/Index Of.png'>
       </div>
-      <div class='block' id='block_limit'>
-        <h3>Limit</h3>
-        <div>Returns the input if it lies within the bounds,<br>otherwise the closer lower / upper bounds.</div>
-        <img src='../assets/blocks/Math/Limit.png'>
+      <div class='block' id='block_includes'>
+        <h3>Includes</h3>
+        <div>Returns whether or not the string includes the match.</div>
+        <img src='../assets/blocks/String/Includes.png'>
       </div>
     </div>
   </body>
