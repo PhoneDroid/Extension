@@ -10,5 +10,5 @@ as a new theme.
 [Instructions](https://github.com/DeltaBlock/DeltaBlock/wiki/Installation)
 
 ## Wiki (temporary)
-[Wiki](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Math)
+[Wiki](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Math.html)
 
