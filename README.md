@@ -9,6 +9,13 @@ as a new theme.
 ## Installation
 [Instructions](https://github.com/DeltaBlock/DeltaBlock/wiki/Installation)
 
-## Wiki (temporary)
-[Wiki](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Math.html)
+## Wiki
+[Arduino](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Arduino.html)
+[Math](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Math.html)
+[Logic](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Logic.html)
+[String](https://deltablock.github.io/DeltaBlock/Wiki/Categories/String.html)
+[Flow](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Flow.html)
+[Array](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Array.html)
+[Map](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Map.html)
+[Set](https://deltablock.github.io/DeltaBlock/Wiki/Categories/Set.html)
 
