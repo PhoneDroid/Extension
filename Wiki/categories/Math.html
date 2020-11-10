@@ -3,24 +3,138 @@
   <head>
     <meta charset="utf-8">
     <title>Math</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --selection: #3F7799;
+        --light: #195A84;
+        --dark: #14496B;
+      }
+
+      ::selection {
+        color: var(--selection);
+        background: #FFFFFFaa;
+      }
+
+      ::-moz-selection {
+        color: var(--selection);
+        background: #FFFFFFaa;
+      }
+
+      * {
+        position: relative;
+        color: white;
+        font-family: 'Roboto Mono', monospace;
+      }
+
       body {
         background-color: #195A84;
-        background: url("../assets/grid.png");
+        background: url('../assets/grid.png');
         background-repeat: repeat;
       }
 
       .main {
+        position: absolute;
         width: fit-content;
         height: fit-content;
+        left: 50%;
+        transform: translateX(-50%);
 
-        background-color: #5886D3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        padding: 10px;
+      }
+
+      .main > * {
+        min-width: fit-content;
+        width: 100%;
+      }
+
+      .main > *:not(:last-child) {
+        margin-bottom: 8px;
+      }
+
+
+      /*
+          Title
+      */
+
+      .title {
+        width: calc(100% + 17px);
+
+        background-color: var(--dark);
+        border-radius: 10px;
+
+        padding: 5px;
+      }
+
+      .title > h1 {
+        width: fit-content;
+        left: 50%;
+        transform: translateX(-50%);
+
+        margin: 0;
+      }
+
+
+      /*
+          Block
+      */
+
+      .block {
+        background-color: var(--light);
+
+        border: 1px solid var(--dark);
+        border-width: 3px 8px 8px 3px;
+        border-radius: 20px;
+
+        padding: 8px;
+      }
+
+      .block > h1 {
+
+      }
+
+      .block > div {
+
+      }
+
+      .block > img {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+
+        margin-top: 10px;
       }
     </style>
   </head>
   <body>
     <div class='main'>
-
+      <div class='title'>
+        <h1>Math</h1>
+      </div>
+      <div class='block' id='block_min'>
+        <h3>Min</h3>
+        <div>Returns the smaller of the two values.</div>
+        <img src='../assets/blocks/Math/Min.png'>
+      </div>
+      <div class='block' id='block_max'>
+        <h3>Max</h3>
+        <div>Returns the bigger of the two values.</div>
+        <img src='../assets/blocks/Math/Max.png'>
+      </div>
+      <div class='block' id='block_negate'>
+        <h3>Negate</h3>
+        <div>Returns the negation of the value.</div>
+        <img src='../assets/blocks/Math/Negate.png'>
+      </div>
+      <div class='block' id='block_limit'>
+        <h3>Limit</h3>
+        <div>Returns the input if it lies within the bounds,<br>otherwise the closer lower / upper bounds.</div>
+        <img src='../assets/blocks/Math/Limit.png'>
+      </div>
     </div>
   </body>
 </html>
