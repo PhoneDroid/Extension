@@ -4,7 +4,7 @@
     Website: https://github.com/DeltaBlock/DeltaBlock
     Email: JDK.FHWS@gmail.com
 
-    default / Map.js
+    proto / Map.js
 */
 
 {

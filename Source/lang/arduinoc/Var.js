@@ -10,21 +10,19 @@
 {
   ⵠ.log('Loading lang/arduinoc/Var.js');
 
-  const lang = ArduinoC;
-
-  const operators = {
-    assign: '=',
-    plus: '+=',
-    minus: '-=',
-    minus_reverse: '=',
-    multiply: '*=',
-    divide: '/=',
-    mod: '%=',
-    power: '='
-  };
-
-
-  const vars = new Map();
+  const
+    lang = ArduinoC,
+    vars = new Map(),
+    operators = {
+      minus_reverse: '=',
+      multiply: '*=',
+      divide: '/=',
+      assign: '=',
+      minus: '-=',
+      power: '=',
+      plus: '+=',
+      mod: '%='
+    };
 
 
   /*
@@ -88,8 +86,6 @@
   */
 
   lang.var_new = ({ type , name }) => {
-    ⵠ.warn(`type: ${ type }\nname: ${ name }`);
-
     return `${ type } ${ namify(name) };`;
   };
 
@@ -98,12 +94,10 @@
       Set
   */
 
-  lang.var_set = ({ name , operator , value }) => {
-    ⵠ.warn(`name: ${ name }\nvalue: ${ value }`);
+  lang.var_set = ({ name , value }) => {
+    let v = namify(name);
 
-    name = namify(name);
-
-    return `${ name } = cast(${ name },${ value });`;
+    return `${ v } = cast(${ v },${ value });`;
   };
 
 
@@ -112,22 +106,22 @@
   */
 
   lang.var_assign = ({ name , operator , value }) => {
-    ⵠ.warn(`name: ${ name }\nvalue: ${ value }`);
-
-    name = namify(name);
-
     let
       op = operators[operator],
-      pre = '',
-      post = '';
+      v = namify(name),
+      post = '',
+      pre = '';
 
-    if(operator === 'power')
-      pre = `${ name } *`;
+    switch(operator){
+    case 'power':
+      pre = `${ v } * `;
+      break;
+    case 'minus_reverse':
+      post = ` - ${ v }`;
+      break;
+    }
 
-    if(operator === 'minus_reverse')
-      post = ` - ${ name }`;
-
-    return `${ name } ${ op } ${ pre }cast(${ name },${ value })${ post };`;
+    return `${ v } ${ op } ${ pre }cast(${ v },${ value })${ post };`;
   };
 
 
@@ -181,6 +175,11 @@ template <typename Input> String cast(String type,Input value){
   return String(value);
 }
 `;
+
+
+  /*
+      For
+  */
 
   lang.var_for = ({ from , to , index }) => {
     const

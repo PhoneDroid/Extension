@@ -31,6 +31,7 @@ const ⵠ = {};
   */
 
   isFunc = (value) => typeof value === 'function';
+  isArray = (value) => typeof value === 'array';
 
 
   /*
@@ -244,6 +245,7 @@ const ⵠ = {};
 try {
   ⵠ.script.loadAll([
     '/libs/Utils.js',
+    '/libs/proto/String.js',
     '/libs/proto/Array.js',
     '/libs/proto/Map.js',
     '/libs/addressed/Addressable.js',
@@ -254,7 +256,8 @@ try {
     '/lang/arduinoc/Lang.js',
     '/lang/arduinoc/Var.js',
     '/lang/arduinoc/Array.js',
-    '/lang/arduinoc/Set.js'
+    '/lang/arduinoc/Set.js',
+    '/lang/arduinoc/Pin.js'
   ])(() => {
     ⵠ.log('All Dependencies Loaded');
 
@@ -600,73 +603,9 @@ try {
         type: 'string',
         example: 'output'
       }],
-      code: δFunc(() => {
-        let
-          code = '',
-          pin = this.pin,
-          mode = this.mode;
-
-        false && ⵠ.warn(`
-          pin: [${ pin }]
-          mode: [${ mode }]
-        `);
-
-        const make = (pin) => {
-          code += `pinMode(${ pin },${ mode });\n`;
-        };
-
-
-        /*  State  */
-
-        if(/^[a-z_][a-z0-9_]*$/i.test(mode))
-          mode = 'toMode(String(' + mode + '))';
-        else {
-          mode = mode
-            .toLowerCase()
-            .substring(1,mode.length - 1);
-
-          mode = (mode == 'in' || mode == 'input') ? 'INPUT' : 'OUTPUT';
-        }
-
-
-        /*  Pin  */
-
-        if(pin === 'None')
-          return '';
-
-        if(/^"[\s\S]*"$/.test(pin)){
-          if(/^"(\d+,)*(\d+)"$/.test(pin))
-            pin
-            .substring(1,pin.length - 1)
-            .split(',')
-            .filter((pin) => /\d+/.test(pin))
-            .unique()
-            .forEach(make);
-          else
-          if(/^"\d-\d"$/.test(pin)){
-            const [ f , t ] = pin
-              .substring(1,pin.length - 1)
-              .split('-');
-
-            const
-              to = parseInt(t),
-              from = parseInt(f);
-
-            for(let c = from;c <= to;c++)
-              make(c);
-          }
-        } else {
-          make(`String(${ pin }).toInt()`);
-        }
-
-        return code;
-      }),
+      code: () => ArduinoC.pin_mode(this),
       sections: {
-        declare:
-          'bool toMode(String mode){\n' +
-          '  mode.toLowerCase();\n' +
-          '  return (mode == "in" || mode == "input") ? INPUT : OUTPUT;\n' +
-          '}\n'
+        declare: () => ArduinoC.pin_toMode + ArduinoC.pin_toPin
       }
     })
 
@@ -687,68 +626,9 @@ try {
         type: 'string',
         example: 'high'
       }],
-      code: δFunc(() => {
-        let
-          code = '',
-          pin = this.pin,
-          state = this.state;
-
-        false && ⵠ.warn(`
-          pin: [${ pin }]
-          state: [${ state }]
-        `);
-
-        const make = (pin) => {
-          code += `digitalWrite(${ pin },${ state });\n`;
-        };
-
-
-        /*  State  */
-
-        switch(true){
-        case state === 'true':
-          state = 'HIGH';
-          break;
-        case state === 'false':
-          state = 'LOW';
-          break;
-        case /^"[\s\S]*"$/.test(state):
-          state = state
-            .toLowerCase()
-            .substring(1,state.length - 1);
-
-          state = (state == 'high' || state == '1' || state == 'true') ? 'HIGH' : 'LOW';
-          break;
-        default:
-          state = 'toState(String(' + state + '))';
-        }
-
-
-        /*  Pin  */
-
-        if(pin === 'None')
-          return '';
-
-        if(/^"[\s\S]*"$/.test(pin)){
-          if(/^"(\d+,)*(\d+)"$/.test(pin))
-            pin
-            .substring(1,pin.length - 1)
-            .split(',')
-            .filter((pin) => /\d+/.test(pin))
-            .unique()
-            .forEach(make);
-        } else {
-          make(`String(${ pin }).toInt()`);
-        }
-
-        return code;
-      }),
+      code: () => ArduinoC.pin_state(this),
       sections: {
-        declare:
-          'bool toState(String state){\n' +
-          '  state.toLowerCase();\n' +
-          '  return (state == "true" || state == "1" || state == "high") ? HIGH : LOW;\n' +
-          '}\n'
+        declare: () => ArduinoC.pin_toState + ArduinoC.pin_toPin
       }
     })
 
