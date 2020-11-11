@@ -48,9 +48,7 @@
   */
 
   lang.pin_toPin = `
-template <typename Type> int toPin(Type value){
-  return cast(0,value);
-}
+#define toPin(value) cast(0,value)
   `;
 
 
