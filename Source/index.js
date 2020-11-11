@@ -254,6 +254,7 @@ try {
     '/libs/addressed/Map.js',
     '/libs/Flow.js',
     '/lang/arduinoc/Lang.js',
+    '/lang/arduinoc/Logic.js',
     '/lang/arduinoc/Var.js',
     '/lang/arduinoc/Array.js',
     '/lang/arduinoc/Set.js',
