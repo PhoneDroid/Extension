@@ -88,7 +88,8 @@ template <typename Type> int toPin(Type value){
 
   lang.pin_toMode = `
 template<typename Type> bool toMode(Type mode){
-  String m = String(mode).toLowerCase();
+  String m = String(mode);
+  m.toLowerCase();
   return (m == "in" || m == "input") ? INPUT : OUTPUT;
 }
   `;
@@ -145,7 +146,8 @@ template<typename Type> bool toMode(Type mode){
 
   lang.pin_toState = `
 template<typename Type> bool toState(Type state){
-  String s = String(state).toLowerCase();
+  String s = String(state);
+  s.toLowerCase();
   return (s == "true" || s == "1" || s == "high") ? HIGH : LOW;
 }
   `;
