@@ -48,7 +48,7 @@
   */
 
   lang.pin_toPin = `
-#define toPin(value) cast(0,value)
+#define toPin(value) String(value).toInt()
   `;
 
 

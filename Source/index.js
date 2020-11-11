@@ -683,7 +683,6 @@ try {
         example: "variable"
       }],
       code: () => ArduinoC.var_new(this)
-
     })
 
 
@@ -958,45 +957,7 @@ try {
       run: ({ condition , then , otherwise }) => {
         return condition ? then : otherwise;
       },
-      code: `(/*{ condition }*/) ? (${
-        δFunc(() => {
-          let then = this.then;
-
-          if(then === 'None')
-            return '';
-
-          if(/^"[\s\S]*"$/.test(then)){
-            then = then.substring(1,then.length - 1);
-
-            if(/^((((-?[1-9]\d*(\.\d+)?)|(\.\d+))([eE]-?\d+)?)|(B[01]+)|(0x[0-9a-fA-F]+))$/.test(then)){
-              return then;
-            } else {
-              return `"${ then }"`;
-            }
-          } else {
-            return then;
-          }
-        })
-      }) : (${
-        δFunc(() => {
-          let otherwise = this.otherwise;
-
-          if(otherwise === 'None')
-            return '';
-
-          if(/^"[\s\S]*"$/.test(otherwise)){
-            otherwise = otherwise.substring(1,otherwise.length - 1);
-
-            if(/^((((-?[1-9]\d*(\.\d+)?)|(\.\d+))([eE]-?\d+)?)|(B[01]+)|(0x[0-9a-fA-F]+))$/.test(otherwise)){
-              return otherwise;
-            } else {
-              return `"${ otherwise }"`;
-            }
-          } else {
-            return otherwise;
-          }
-        })
-      })`
+      code: () => ArduinoC.logic_ternary(this)
     })
 
 
@@ -1019,26 +980,7 @@ try {
       run: ({ condition , then  }) => {
         return condition ? then : '';
       },
-      code: `(/*{ condition }*/) ? (${
-        δFunc(() => {
-          let then = this.then;
-
-          if(then === 'None')
-            return '';
-
-          if(/^"[\s\S]*"$/.test(then)){
-            then = then.substring(1,then.length - 1);
-
-            if(/^((((-?[1-9]\d*(\.\d+)?)|(\.\d+))([eE]-?\d+)?)|(B[01]+)|(0x[0-9a-fA-F]+))$/.test(then)){
-              return then;
-            } else {
-              return `"${ then }"`;
-            }
-          } else {
-            return then;
-          }
-        })
-      }) : ""`
+      code: () => ArduinoC.logic_ternary_true(this)
     })
 
     /*
@@ -1060,26 +1002,7 @@ try {
       run: ({ condition , otherwise }) => {
         return condition ? '' : otherwise;
       },
-      code: `(/*{ condition }*/) ? "" : (${
-        δFunc(() => {
-          let otherwise = this.otherwise;
-
-          if(otherwise === 'None')
-            return '';
-
-          if(/^"[\s\S]*"$/.test(otherwise)){
-            otherwise = otherwise.substring(1,otherwise.length - 1);
-
-            if(/^((((-?[1-9]\d*(\.\d+)?)|(\.\d+))([eE]-?\d+)?)|(B[01]+)|(0x[0-9a-fA-F]+))$/.test(otherwise)){
-              return otherwise;
-            } else {
-              return `"${ otherwise }"`;
-            }
-          } else {
-            return otherwise;
-          }
-        })
-      })`
+      code: () => ArduinoC.logic_ternary_false(this)
     });
   }
 

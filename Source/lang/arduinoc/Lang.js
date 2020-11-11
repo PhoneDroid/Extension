@@ -12,6 +12,10 @@
 
   const lang = ArduinoC = {};
 
+  const
+    reg_string = /^"[\S\s]*"$/,
+    reg_number = /^((((-?[1-9]\d*(\.\d+)?)|(\.\d+))([eE]-?\d+)?)|(B[01]+)|(0x[0-9a-fA-F]+))$/;
+
 
   /*
       Reg
@@ -40,8 +44,14 @@
       Is String
   */
 
-  lang.isString = (value) => /^"[\S\s]*"$/.test(value);
+  lang.isString = (value) => reg_string.test(value);
 
+
+  /*
+      Is Number
+  */
+
+  lang.isNumber = (value) => reg_number.test(value);
 
 
   /*
