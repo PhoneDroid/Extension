@@ -1072,7 +1072,11 @@ try {
         example: 10
       }],
       run: ({ input , from , to }) => {
-        return input.substring(from,to);
+        return input.sub(from,to);
+      },
+      code: () => ArduinoC.string_substring(this),
+      sections: {
+        declare: () => ArduinoC.string_substringer()
       }
     })
 
@@ -1096,6 +1100,10 @@ try {
       run: ({ input ,match }) => {
         const regex = new RegExp(match);
         return regex.test(input);
+      },
+      code: () => ArduinoC.string_includes(this),
+      sections: {
+        declare: () => ArduinoC.string_includer()
       }
     })
 
@@ -1118,6 +1126,10 @@ try {
       }],
       run: ({ input ,match }) => {
         return input.indexOf(match);
+      },
+      code: () => ArduinoC.string_index_of(this),
+      sections: {
+        declare: () => ArduinoC.string_indexer()
       }
     });
   }
