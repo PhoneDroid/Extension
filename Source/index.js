@@ -1042,6 +1042,10 @@ try {
       run: ({ input , match , replacement }) => {
         const regex = new RegExp(match,'g');
         return input.replace(regex,replacement);
+      },
+      code: () => ArduinoC.string_replace(this),
+      sections: {
+        declare: () => ArduinoC.string_replacer()
       }
     })
 

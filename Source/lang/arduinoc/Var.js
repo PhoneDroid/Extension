@@ -33,51 +33,9 @@
     if(original.startsWith('\"'))
       original = original.substring(1,original.length - 1);
 
-    let hashed = vars.get(original);
-
-    if(hashed)
-      return hashed;
-
-    hashed = '';
-
-    let
-      num,
-      hash = 0,
-      sign = '',
-      binary = 61;
-
-    const
-      table = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      convert = (index) => hashed = table[index] + hashed;
-
-    if(original.length !== 0)
-      for(let c = 0;c < original.length;c++){
-        let code = original.charCodeAt(c);
-        hash = (hash << 5) - hash
-        hash += code;
-        hash &= hash;
-      }
-
-    if(hash < 0)
-      sign = 'Z';
-
-    hash = Math.abs(hash);
-
-    while(hash >= binary){
-      num = hash % binary;
-      hash = Math.floor(hash / binary);
-
-      convert(num);
-    }
-
-    if(hash > 0)
-      convert(hash);
-
-    hashed = `v_${ sign + hashed }`;
-
-    vars.set(original,hashed);
-
-    return hashed;
+    return vars.getOrInsert(original)(() => {
+      return `v_${ lang.namify(original) }`;
+    });
   };
 
 

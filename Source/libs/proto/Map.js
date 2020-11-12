@@ -20,4 +20,19 @@
   proto.ⵠGet = function(key){
     return optional(this.get(key));
   };
+
+
+  /*
+      Get Or Insert
+  */
+
+  proto.getOrInsert = function(key){
+    return (supplier = δ) => {
+      return optional(this.get(key))((id) => id,() => {
+        const value = supplier(key);
+        this.set(key,value);
+        return value;
+      });
+    };
+  };
 }
