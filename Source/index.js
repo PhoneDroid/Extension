@@ -360,6 +360,7 @@ const translations = {
     logic_ternary      : 'if [condition] then [then] else [otherwise]',
     logic_ternary_true : 'if [condition] then [then]',
     logic_ternary_false: 'if [condition] else [otherwise]',
+    logic_compare      : '[a] [operator] [b]',
 
     ⵠ_flow: 'Flow',
     flow_event: 'on [event]',
@@ -381,7 +382,14 @@ const translations = {
     assignment_type_multiply: "*=",
     assignment_type_divide: "/=",
     assignment_type_mod: "%=",
-    assignment_type_power: "^="
+    assignment_type_power: "^=",
+
+    compare_equal: "==",
+    compare_unequal: "!=",
+    compare_less: "<",
+    compare_less_equal: "<=",
+    compare_greater: ">",
+    compare_greater_equal: ">="
   }
 };
 
@@ -985,6 +993,7 @@ try {
       code: () => ArduinoC.logic_ternary_true(this)
     })
 
+
     /*
         Ternary False
     */
@@ -1005,7 +1014,77 @@ try {
         return condition ? '' : otherwise;
       },
       code: () => ArduinoC.logic_ternary_false(this)
-    });
+    })
+
+
+    /*
+        Compare
+    */
+
+    .block({
+      id: 'compare',
+      type: 'boolean',
+      args: [{
+        id: 'a',
+        type: 'string',
+        example: "123"
+      },{
+        id: 'operator',
+        type: 'fieldMenu',
+        menu: 'compare_operators',
+        example: 'equal'
+      },{
+        id: 'b',
+        type: 'string',
+        example: "456"
+      }],
+      run: ({ a , operator , b }) => {
+        switch(operator){
+        case 'equal':
+          return a == b;
+        case 'unequal':
+          return a != b;
+        case 'less':
+          return a < b;
+        case 'greater':
+          return a > b;
+        case 'less_equal':
+          return a <= b;
+        case 'greater_equal':
+          return a >= b;
+        default:
+          return false;
+        }
+      },
+      code: () => ArduinoC.logic_compare(this)
+    })
+
+
+    /*
+        Compare Operators
+    */
+
+    .menu('compare_operators',[
+      {
+        text: 'compare_equal',
+        value: 'equal'
+      },{
+        text: 'compare_unequal',
+        value: 'unequal'
+      },{
+        text: 'compare_less',
+        value: 'less'
+      },{
+        text: 'compare_less_equal',
+        value: 'less_equal'
+      },{
+        text: 'compare_greater_equal',
+        value: 'greater_equal'
+      },{
+        text: 'compare_greater',
+        value: 'greater'
+      }
+    ]);
   }
 
 

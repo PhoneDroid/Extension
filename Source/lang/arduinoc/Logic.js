@@ -10,7 +10,16 @@
 {
   ⵠ.log('Loading lang/arduinoc/Logic.js');
 
-  const lang = ArduinoC;
+  const
+    lang = ArduinoC,
+    operators = {
+      equal: '==',
+      unequal: '!=',
+      less: '<',
+      greater: '>',
+      less_equal: '<=',
+      greater_equal: '>='
+    };
 
 
   function wrap(input = ''){
@@ -54,5 +63,22 @@
 
   lang.reg('logic_ternary_false')(({ condition , otherwise }) => {
     return `((${ condition }) ? '' : (${ wrap(otherwise) }))`;
+  });
+
+
+  /*
+      Compare
+  */
+
+  lang.reg('logic_compare')(({ a , operator , b }) => {
+    return optional(operators[operator])((op) => {
+      if(lang.isString(a))
+        a = a.sub(1,-1);
+
+      if(lang.isString(b))
+        b = b.sub(1,-1);
+
+      return `((${ a }) ${ op } (${ b }))`;
+    },() => '');
   });
 }
