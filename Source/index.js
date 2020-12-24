@@ -268,6 +268,7 @@ try {
     'libs/proto/String.js',
     'libs/proto/Array.js',
     'libs/proto/Map.js',
+    'libs/addressed/Addressable.js',
     'libs/addressed/Array.js',
     'libs/addressed/Set.js',
     'libs/addressed/Map.js',
