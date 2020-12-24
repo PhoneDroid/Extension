@@ -53,7 +53,18 @@
   */
 
   lang.var_set = ({ name , value }) => {
-    let v = namify(name);
+    const v = namify(name);
+
+    return `${ v } = cast(${ v },${ value });`;
+  };
+
+
+  /*
+      Set Literal
+  */
+
+  lang.var_set_literal = ({ name , value }) => {
+    const v = name.sub(1,-1);
 
     return `${ v } = cast(${ v },${ value });`;
   };

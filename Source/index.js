@@ -1,4 +1,7 @@
-const ⵠ = {};
+const ⵠ = {
+  script: {},
+  root: window.MbApi.getExtResPath('','')
+};
 
 
 {
@@ -208,29 +211,46 @@ const ⵠ = {};
 */
 
 {
-  ⵠ.script = {};
+  const { root , script } = ⵠ;
 
-  ⵠ.script.load = (path) => (callback) => {
+
+  /*
+      Load Internal
+  */
+
+  script.loadInternal = (path) => script.load(`${ root }deltablock/${ path }`);
+
+
+  /*
+      Load
+  */
+
+  script.load = (path) => (callback) => {
     try {
-      const
-        script = document.createElement('script'),
-        url = window.MbApi.getExtResPath(`deltablock/${ path }`,'deltablock');
+      const script = document.createElement('script');
 
+      script.src = path;
       script.type = 'application/javascript';
-      script.src = url;
       script.addEventListener('load',callback);
 
       document.head.appendChild(script);
     } catch (e) { ⵠ.error(e); }
   };
 
-  ⵠ.script.loadAll = (paths = []) => (callback) => {
+
+  /*
+      Load All
+  */
+
+  script.loadAll = (paths = [],internal = true) => (callback) => {
+    const loader = script[internal ? 'loadInternal' : 'load'];
+
     try {
       function next(){
         let path = paths.shift();
 
         if(path){
-          ⵠ.script.load(path)(next);
+          loader(path)(next);
         } else {
           callback();
         }
@@ -244,22 +264,21 @@ const ⵠ = {};
 
 try {
   ⵠ.script.loadAll([
-    '/libs/Utils.js',
-    '/libs/proto/String.js',
-    '/libs/proto/Array.js',
-    '/libs/proto/Map.js',
-    '/libs/addressed/Addressable.js',
-    '/libs/addressed/Array.js',
-    '/libs/addressed/Set.js',
-    '/libs/addressed/Map.js',
-    '/libs/Flow.js',
-    '/lang/arduinoc/Lang.js',
-    '/lang/arduinoc/String.js',
-    '/lang/arduinoc/Logic.js',
-    '/lang/arduinoc/Var.js',
-    '/lang/arduinoc/Array.js',
-    '/lang/arduinoc/Set.js',
-    '/lang/arduinoc/Pin.js'
+    'libs/Utils.js',
+    'libs/proto/String.js',
+    'libs/proto/Array.js',
+    'libs/proto/Map.js',
+    'libs/addressed/Array.js',
+    'libs/addressed/Set.js',
+    'libs/addressed/Map.js',
+    'libs/Flow.js',
+    'lang/arduinoc/Lang.js',
+    'lang/arduinoc/String.js',
+    'lang/arduinoc/Logic.js',
+    'lang/arduinoc/Var.js',
+    'lang/arduinoc/Array.js',
+    'lang/arduinoc/Set.js',
+    'lang/arduinoc/Pin.js'
   ])(() => {
     ⵠ.log('All Dependencies Loaded');
 
@@ -278,6 +297,24 @@ try {
         ⵠ.Map.reset();
       });
     }
+
+
+    /*
+        Load External Scripts
+    */
+
+    try {
+      ⵠ.script.load(`${ ⵠ.root }../Scripts/Scripts.js`)(() => {
+        if(typeof Scripts !== 'undefined'){
+          const paths = Scripts
+            .map((path) => `${ ⵠ.root }../Scripts/${ path }`);
+
+          ⵠ.script.loadAll(paths,false)(() => {
+            ⵠ.log(`External scripts loaded`);
+          });
+        }
+      });
+    } catch (e) { ⵠ.error(e); }
   });
 } catch (e) {
   ⵠ.error(e);
@@ -300,6 +337,7 @@ const translations = {
     arduino_pin_to_float: 'toFloat ( [input] )',
     arduino_var_new: '[type] [name]',
     arduino_var_set: '[name] = [value]',
+    arduino_var_set_literal: '>> [name] = [value]',
     arduino_var_assign: '[name] [operator] [value]',
     arduino_var_get: '[name]',
     arduino_var_for: 'from: ( [from] ) to: ( [to] ) index: ( [index] )',
@@ -749,6 +787,30 @@ try {
         example: "value"
       }],
       code: () => ArduinoC.var_set(this),
+      sections: {
+        declare: () => ArduinoC.var_types
+      }
+    })
+
+
+
+    /*
+        set Literal
+    */
+
+    .block({
+      id: 'var_set_literal',
+      type: 'command',
+      args: [{
+        id: 'name',
+        type: 'string',
+        example: "variable"
+      },{
+        id: 'value',
+        type: 'string',
+        example: "value"
+      }],
+      code: () => ArduinoC.var_set_literal(this),
       sections: {
         declare: () => ArduinoC.var_types
       }
