@@ -104,6 +104,10 @@ const ⵠ = {
   ⵠ.warn = (...args) => ⵠ.backlog.warn.push(...args);
 
   ⵠ.error = (...args) => ⵠ.backlog.error.push(...args);
+
+  console.log = (...args) => ⵠ.log(...args);
+  console.warn = (...args) => ⵠ.warn(...args);
+  console.error = (...args) => ⵠ.error(...args);
 }
 
 
@@ -268,6 +272,7 @@ try {
     'libs/proto/String.js',
     'libs/proto/Array.js',
     'libs/proto/Map.js',
+    'libs/Console.js',
     'libs/addressed/Addressable.js',
     'libs/addressed/Array.js',
     'libs/addressed/Set.js',
