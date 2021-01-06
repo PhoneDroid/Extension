@@ -9,8 +9,6 @@
 
 
 try {
-  ⵠ.log('Loading addressed/Map.js');
-
 
   ⵠ.addressable('Map')({
     def: () => new Map()
@@ -117,3 +115,5 @@ try {
     };
   });
 } catch (e) { ⵠ.error(e); }
+
+finish('libs/addressed/Map.js');

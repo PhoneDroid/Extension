@@ -1,0 +1,112 @@
+/*
+    Copyright ⵠ(DeltaBlock) @ JDK, 2020
+
+    Website: https://github.com/DeltaBlock/DeltaBlock
+    Email: JDK.FHWS@gmail.com
+
+    Main.css
+*/
+
+
+:root {
+  --BASE: #195a84;
+  --PANE: #3f7799;
+  --LIGHT: #4D90B7;
+}
+
+* {
+  border: 0;
+  outline: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+
+/* Body */
+
+.gui_body-wrapper {
+  background-color: var(--BASE) !important;
+}
+
+
+/* Devices / Sprites / Background */
+
+.target-panel_wrapper {
+  background-color: var(--PANE) !important;
+}
+
+.target-panel_tab-list > li {
+  color: #EAEAEA;
+  font-weight: bold;
+}
+
+
+/* Scrollbar */
+
+.blocklyToolboxDiv > ::-webkit-scrollbar {
+  background-color: var(--BASE) !important;
+}
+
+
+/* Grid */
+
+.blocklySvg {
+  background-color: var(--PANE) !important;
+}
+
+
+/* Categories */
+
+.scratchCategoryMenu {
+  background-color: var(--PANE) !important;
+}
+
+.blocks_blocks .blocklyToolboxDiv {
+  width: fit-content !important;
+}
+
+.blocks_blocks .scratchCategoryMenuItem {
+  padding: 0.875rem 5px 0.4375rem 5px !important;
+}
+
+.scratchCategoryMenuRow {
+  min-width: 100% !important;
+  width: fit-content !important;
+}
+
+.scratchCategoryMenuItem.categorySelected {
+  background-color: var(--BASE) !important;
+}
+
+.blocks_blocks .scratchCategoryMenuItem:not(.categorySelected) .scratchCategoryMenuItemLabel {
+  color: #EAEAEA !important;
+  font-weight: bold !important;
+}
+
+
+/*  Flyout  */
+.blocklyFlyoutBackground {
+  fill: var(--PANE) !important;
+}
+
+
+
+/*  Borders  */
+
+.stage_stage {
+  border: 1px solid var(--LIGHT) !important;
+}
+
+.editor-panel_wrapper {
+  border: 1px solid var(--LIGHT) !important;
+}
+
+.blocks_blocks .blocklyFlyout {
+  border-color: var(--LIGHT) !important;
+}
+
+.blocks_blocks .blocklyToolboxDiv {
+  border-color: var(--LIGHT) !important;
+}

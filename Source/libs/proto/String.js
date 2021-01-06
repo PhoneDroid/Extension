@@ -7,17 +7,20 @@
     proto / String.js
 */
 
-{
-  ⵠ.log('Loading proto/String.js');
+try {
 
   const proto = String.prototype;
+  proto.allMatches = AllMatches;
+  proto.chars = Chars;
+  proto.sub = Sub;
+  proto.is = Is;
 
 
   /*
       All Matches
   */
 
-  proto.allMatches = function(regex){
+  function AllMatches(regex){
     return this.match(regex) || [];
   };
 
@@ -26,7 +29,7 @@
       Sub
   */
 
-  proto.sub = function(from,to){
+  function Sub(from,to){
     return this.substring(from,to < 0 ? this.length + to : to);
   };
 
@@ -35,10 +38,22 @@
       Is
   */
 
-  proto.is = function(...values){
+  function Is(...values){
     if(isArray(values[0]))
       values = values[0];
 
     return values.includes(this.valueOf());
   };
-}
+
+
+  /*
+      Chars
+  */
+
+  function Chars(){
+    return [...this];
+  };
+
+} catch (e) { ⵠ.error(e); }
+
+finish('libs/proto/String.js');

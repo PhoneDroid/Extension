@@ -1,6 +1,42 @@
 const ⵠ = {
   script: {},
-  root: window.MbApi.getExtResPath('','')
+  root: window.MbApi.getExtResPath('',''),
+  scripts: [],
+  files: [
+    'libs/Utils.js',
+    /*  Prototypes  */
+    'libs/proto/String.js',
+    'libs/proto/Array.js',
+    'libs/proto/Map.js',
+    'libs/proto/Set.js',
+    'libs/proto/html/Element.js',
+
+    'libs/Console.js',
+    'libs/addressed/Addressable.js',
+    'libs/addressed/Array.js',
+    'libs/addressed/Set.js',
+    'libs/addressed/Map.js',
+    'libs/Flow.js',
+    'libs/Meta.js',
+    /*  ArduinoC  */
+    'lang/arduinoc/Lang.js',
+    'lang/arduinoc/String.js',
+    'lang/arduinoc/Logic.js',
+    'lang/arduinoc/Var.js',
+    'lang/arduinoc/Array.js',
+    'lang/arduinoc/Set.js',
+    'lang/arduinoc/Pin.js'
+  ],
+  supportedDevices: [
+    'arduino_leonardo',
+    'arduino_mega',
+    'arduino_mega2560',
+    'arduino_micro',
+    'arduino_nano',
+    'arduino_nano_old',
+    'arduino_uno',
+    'arduino_yun'
+  ]
 };
 
 
@@ -24,8 +60,8 @@ const ⵠ = {
       Call
   */
 
-  optional = (value) => (success,failure = δ) => {
-    return valid(value) ? success(value) : failure();
+  optional = (value) => (onValid,onInvalid = δ) => {
+    return valid(value) ? onValid(value) : onInvalid();
   };
 
 
@@ -34,7 +70,8 @@ const ⵠ = {
   */
 
   isFunc = (value) => typeof value === 'function';
-  isArray = (value) => typeof value === 'array';
+  isArray = (value) => Array.isArray(value),
+  isString = (value) => typeof value === 'string';
 
 
   /*
@@ -48,43 +85,78 @@ const ⵠ = {
       getImage
   */
 
-  ⵠ.getImage = (path) => {
-    return window
-      .MbApi
-      .getExtResPath(`deltablock/imgs/${ path }`,'deltablock')
-  };
+  ⵠ.getImage = (path) => `${ ⵠ.root }/deltablock/assets/images/${ path }`;
 
 
   /*
-      Supported Devices
+      Create
   */
 
-  ⵠ.supportedDevices = [
-    'arduino_leonardo',
-    'arduino_mega',
-    'arduino_mega2560',
-    'arduino_micro',
-    'arduino_nano',
-    'arduino_nano_old',
-    'arduino_uno',
-    'arduino_yun'
-  ];
+  create = (type = 'div') => document.createElement(type);
+
+
+  /*
+      Query
+  */
+
+  query = (selector) => document.querySelector(selector);
+
+
+  /*
+      Style
+  */
+
+  stylesheet = (path) => {
+    const sheet = create('link');
+    sheet.rel = 'stylesheet';
+    sheet.href = `${ ⵠ.root }/deltablock/assets/style/${ path }`;
+    document.head.appendChild(sheet);
+  };
 
 
   /*
       UUID
   */
 
-  uuid = () => {
+  {
     const
-      str = ([1e7]+-1e3+-4e3+-8e3+-1e11),
+      template = ([1e7]+-1e3+-4e3+-8e3+-1e11),
       processor = (c) => {
         return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4)
           .toString(16);
       };
 
-    return str.replace(/[018]/g,processor);
+    uuid = () => template.replace(/[018]/g,processor);
+  }
+
+
+  /*
+      Do Recursively
+  */
+
+  doRecursively = (func) => {
+    const next = () => func(next);
+    next();
   };
+
+  finish = (p) => {
+    console.log(`path: ${ p }`);
+  }
+}
+
+
+/*
+    Search
+*/
+
+{
+//   document.addEventListener('click', function(e) {
+//     e = e || window.event;
+//     var target = e.target || e.srcElement,
+//         text = target.textContent || target.innerText;
+//
+//         console.log(target.id,target.className);
+// }, false);
 }
 
 
@@ -112,105 +184,6 @@ const ⵠ = {
 
 
 /*
-    Style
-*/
-
-{
-  const sheet = document.createElement('style');
-  sheet.textContent = `
-    /* Body */
-
-    .gui_body-wrapper {
-      background-color: #195a84 !important;
-    }
-
-
-    /* Devices / Sprites / Background */
-
-    .target-panel_wrapper {
-      background-color: #3f7799 !important;
-    }
-
-    .target-panel_tab-list > li {
-      color: #EAEAEA;
-      font-weight: bold;
-    }
-
-
-    /* Scrollbar */
-
-    .blocklyToolboxDiv > ::-webkit-scrollbar {
-      background-color: #195a84 !important;
-    }
-
-
-    /* Grid */
-
-    .blocklySvg {
-      background-color: #3f7799 !important;
-    }
-
-
-    /* Categories */
-
-    .scratchCategoryMenu {
-      background-color: #3f7799 !important;
-    }
-
-    .blocks_blocks .blocklyToolboxDiv {
-      width: fit-content !important;
-    }
-
-    .blocks_blocks .scratchCategoryMenuItem {
-      padding: 0.875rem 5px 0.4375rem 5px !important;
-    }
-
-    .scratchCategoryMenuRow {
-      min-width: 100% !important;
-      width: fit-content !important;
-    }
-
-    .scratchCategoryMenuItem.categorySelected {
-      background-color: #195a84 !important;
-    }
-
-    .blocks_blocks .scratchCategoryMenuItem:not(.categorySelected) .scratchCategoryMenuItemLabel {
-      color: #EAEAEA !important;
-      font-weight: bold !important;
-    }
-
-
-    /*  Flyout  */
-    .blocklyFlyoutBackground {
-      fill: #3F7799 !important;
-    }
-
-
-
-    /*  Borders  */
-
-    .stage_stage {
-      border: 1px solid #4D90B7 !important;
-    }
-
-    .editor-panel_wrapper {
-      border: 1px solid #4D90B7 !important;
-    }
-
-    .blocks_blocks .blocklyFlyout {
-      border-color: #4D90B7 !important;
-    }
-
-    .blocks_blocks .blocklyToolboxDiv {
-      border-color: #4D90B7 !important;
-    }
-  `;
-
-  document.head.append(sheet);
-}
-
-
-/*
     Load
 */
 
@@ -231,8 +204,7 @@ const ⵠ = {
 
   script.load = (path) => (callback) => {
     try {
-      const script = document.createElement('script');
-
+      const script = create('script');
       script.src = path;
       script.type = 'application/javascript';
       script.addEventListener('load',callback);
@@ -249,45 +221,37 @@ const ⵠ = {
   script.loadAll = (paths = [],internal = true) => (callback) => {
     const loader = script[internal ? 'loadInternal' : 'load'];
 
-    try {
-      function next(){
-        let path = paths.shift();
+    doRecursively((next) => {
+      let path = paths.shift();
 
-        if(path){
-          loader(path)(next);
-        } else {
-          callback();
-        }
+      if(path){
+        window.finish = (p = '') => {
+          if(path.endsWith(p)){
+            ⵠ.log(`<<< ${ p }`);
+          } else {
+            ⵠ.log(`Unknown finish: [${ p }]`);
+          }
+
+          window.finish = null;
+        };
+
+        ⵠ.log(`>>> ${ path }`);
+
+        loader(path)(next);
+        return;
       }
 
-      next();
-    } catch (e) { ⵠ.error(e); }
+      callback();
+    });
   };
 }
 
 
 try {
-  ⵠ.script.loadAll([
-    'libs/Utils.js',
-    'libs/proto/String.js',
-    'libs/proto/Array.js',
-    'libs/proto/Map.js',
-    'libs/Console.js',
-    'libs/addressed/Addressable.js',
-    'libs/addressed/Array.js',
-    'libs/addressed/Set.js',
-    'libs/addressed/Map.js',
-    'libs/Flow.js',
-    'lang/arduinoc/Lang.js',
-    'lang/arduinoc/String.js',
-    'lang/arduinoc/Logic.js',
-    'lang/arduinoc/Var.js',
-    'lang/arduinoc/Array.js',
-    'lang/arduinoc/Set.js',
-    'lang/arduinoc/Pin.js'
-  ])(() => {
+  ⵠ.script.loadAll(ⵠ.files)(() => {
     ⵠ.log('All Dependencies Loaded');
 
+    stylesheet('Main.css');
 
     resetOn('.stop-all_stop-all > span',"STOP");
     resetOn('.green-flag_green-flag > span',"START");
@@ -305,6 +269,9 @@ try {
     }
 
 
+    // ⵠ.log(window.MbApi.file);
+    // ⵠ.log(ⵠ.root);
+
     /*
         Load External Scripts
     */
@@ -315,16 +282,34 @@ try {
           const paths = Scripts
             .map((path) => `${ ⵠ.root }../Scripts/${ path }`);
 
-          ⵠ.script.loadAll(paths,false)(() => {
+          doRecursively((next) => {
+            let path = paths.shift();
+
+            if(path){
+              window.finish = (p = '') => {
+                if(path.endsWith(p)){
+                  ⵠ.log(`<<< ${ p }`);
+                } else {
+                  ⵠ.log(`Unknown finish: [${ p }]`);
+                }
+
+                window.finish = null;
+              };
+
+              ⵠ.log(`>>> ${ path }`);
+
+              ⵠ.script.load(path)(() => next());
+              return;
+            }
+
             ⵠ.log(`External scripts loaded`);
+            ⵠ.scripts.forEach((starter) => starter());
           });
         }
       });
     } catch (e) { ⵠ.error(e); }
   });
-} catch (e) {
-  ⵠ.error(e);
-}
+} catch (e) { ⵠ.error(e); }
 
 
 /*
@@ -391,6 +376,10 @@ const translations = {
 
     ⵠ_crypt: 'Crypt',
     crypt_uuid: 'generate UUID',
+
+    ⵠ_meta: 'Meta',
+    meta_call: 'Call [func] with [args]',
+    meta_listen: 'Listen to [event]',
 
     ⵠ_math: 'Math',
     math_min   : 'min ( [a] , [b] )',
@@ -1244,7 +1233,7 @@ try {
         type: 'string',
         example: "art"
       }],
-      run: ({ input ,match }) => {
+      run: ({ input , match }) => {
         const regex = new RegExp(match);
         return regex.test(input);
       },
@@ -2049,6 +2038,59 @@ try {
       }
     });
   }
+
+
+  /*
+      Meta
+  */
+
+  {
+    new Category('meta',{
+      color: '#696969',
+      icon: 'Meta'
+    })
+
+
+    /*
+        Call
+    */
+
+    .block({
+      id: 'call',
+      type: 'command',
+      args: [{
+        id: 'func',
+        type: 'string',
+        example: "function"
+      },{
+        id: 'args',
+        type: 'string',
+        example: "arguments"
+      }],
+      run: ({ func , args }) => {
+        ⵠ.Meta.call(func,args);
+      }
+    })
+
+
+    /*
+        Listen
+    */
+
+    .block({
+      id: 'listen',
+      type: 'string',
+      args: [{
+        id: 'event',
+        type: 'string',
+        example: "event"
+      }],
+      run: ({ event }) => {
+        return ⵠ.Meta.listen(event);
+      }
+    });
+  }
+
 } catch (e) { ⵠ.error(e) }
 
 

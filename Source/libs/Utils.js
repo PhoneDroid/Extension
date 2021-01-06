@@ -8,9 +8,6 @@
 */
 
 
-ⵠ.log('Loading Utils.js');
-
-
 /*
     is Device
 */
@@ -41,3 +38,5 @@
 
   return false;
 };
+
+finish('libs/Utils.js');

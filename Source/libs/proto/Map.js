@@ -7,17 +7,20 @@
     proto / Map.js
 */
 
-{
-  ⵠ.log('Loading proto/Map.js');
+try {
 
   const proto = Map.prototype;
+  proto.ⵠGet = ⵠGet;
+  proto.getOrInsert = getOrInsert;
+  proto.getOrDefault = getOrDefault;
+
 
 
   /*
       ⵠGet
   */
 
-  proto.ⵠGet = function(key){
+  function ⵠGet(key){
     return optional(this.get(key));
   };
 
@@ -26,7 +29,7 @@
       Get Or Insert
   */
 
-  proto.getOrInsert = function(key){
+  function getOrInsert(key){
     return (supplier = δ) => {
       return optional(this.get(key))((id) => id,() => {
         const value = supplier(key);
@@ -35,4 +38,38 @@
       });
     };
   };
-}
+
+
+  /*
+      Get Or Default
+  */
+
+  function getOrDefault(key,def){
+    return this.get(key) || def;
+  };
+
+
+  /*
+      All Keys / Values
+  */
+
+  function allKeys(){
+    return [...this.keys()];
+  };
+
+  function allValues(){
+    return [...this.values()];
+  };
+
+
+  /*
+      Map From Object
+  */
+
+  Map.fromObject = (object) => {
+    return new Map(Object.entries(object));
+  };
+
+} catch (e) { ⵠ.error(e); }
+
+finish('libs/proto/Map.js');

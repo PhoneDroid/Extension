@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/Array.js');
 
   const lang = ArduinoC;
 
@@ -20,3 +19,5 @@
   lang.array_class = '';
 
 }
+
+finish('lang/arduinoc/Array.js');

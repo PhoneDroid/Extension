@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/String.js');
 
   const lang = ArduinoC;
 
@@ -124,3 +123,5 @@ String ${ indexof }(T1 input,T2 match){
 }`;
   };
 }
+
+finish('lang/arduinoc/String.js');

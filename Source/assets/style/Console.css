@@ -1,0 +1,111 @@
+/*
+    Copyright ⵠ(DeltaBlock) @ JDK, 2020
+
+    Website: https://github.com/DeltaBlock/DeltaBlock
+    Email: JDK.FHWS@gmail.com
+
+    Console.css
+*/
+
+
+#open {
+  position: absolute;
+  right: 400px;
+  top: 12px;
+
+  width: fit-content;
+  height: fit-content;
+
+  padding: 3px 6px;
+
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background-color: var(--LIGHT);
+
+  z-index: 99999;
+
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+#open:hover {
+  border-color: white;
+}
+
+Console {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  min-width: 500px;
+  min-height: 300px;
+  width: 500px;
+  height: 300px;
+
+  background-color: var(--BASE);
+  border: 1px solid var(--LIGHT);
+  border-radius: 10px;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  z-index: 99999;
+}
+
+Console > Tools {
+  height: 24px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  padding: 0 3px 0 3px;
+}
+
+Console > Tools > input {
+  flex-grow: 2;
+  background-color: var(--PANE);
+  border-radius: 0 0 6px 6px;
+  color: #FFFFFFCC;
+  padding: 3px 8px;
+}
+
+Console > Tools > button {
+  width: 50px;
+  background-color: var(--PANE);
+  margin-left: 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+}
+
+Console > Tools > button:hover {
+  border-color: white;
+}
+
+Console > Log {
+  width: 100%;
+  height: calc(100% - 24px);
+
+  overflow-x: scroll;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+
+  padding: 3px;
+}
+
+Console Msg {
+  background-color: var(--PANE);
+  padding: 1px 8px;
+
+  color: white;
+  border: 1px solid white;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  font-family: Tahoma, Geneva, sans-serif;
+}

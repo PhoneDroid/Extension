@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/Logic.js');
 
   const
     lang = ArduinoC,
@@ -82,3 +81,5 @@
     },() => '');
   });
 }
+
+finish('lang/arduinoc/Logic.js');

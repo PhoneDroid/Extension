@@ -8,8 +8,6 @@
 */
 
 try {
-  ⵠ.log('Loading addressed/Addressable.js');
-
 
   ⵠ.addressable = (namespace) => ({ def }) => (callback) => {
     const
@@ -81,3 +79,5 @@ try {
     } catch (e) { ⵠ.error(e); }
   };
 } catch (e){ ⵠ.error(e); }
+
+finish('libs/addressed/Addressable.js');

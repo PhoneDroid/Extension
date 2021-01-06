@@ -9,8 +9,6 @@
 
 
 try {
-  ⵠ.log('Loading addressed/Array.js');
-
 
   ⵠ.addressable('Array')({
     def: () => []
@@ -111,3 +109,5 @@ try {
     };
   });
 } catch (e) { ⵠ.error(e); }
+
+finish('libs/addressed/Array.js');

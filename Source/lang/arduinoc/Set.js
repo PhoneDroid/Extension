@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/Set.js');
 
   const lang = ArduinoC;
 
@@ -20,3 +19,5 @@
   lang.set_class = '';
 
 }
+
+finish('lang/arduinoc/Set.js');

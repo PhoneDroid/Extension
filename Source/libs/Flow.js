@@ -9,25 +9,33 @@
 
 
 try {
-  ⵠ.log('Loading Flow.js');
 
   ⵠ.Flow = {};
 
 
-  const awaiting = new Map();
-  const events = new Set();
+  const
+    awaiting = new Map(),
+    events = new Set();
 
 
-  function exe(app){
-    app.workspace.runBlocks(`deltablock.flow_event`);
+  /*
+      Exe
+  */
+
+  function exe({ workspace }){
+    workspace.runBlocks(`deltablock.flow_event`);
   };
 
+
+  /*
+      Call
+  */
+
   function call(event,app,add = true){
-    if(events.has(event)){
-      add && awaiting.set(uuid(),event);
-    } else {
+    if(!events.has(event)){
       events.add(event);
       exe(app);
+      
       setTimeout(() => {
         events.delete(event);
         retry(app);
@@ -36,14 +44,24 @@ try {
       return true;
     }
 
+    if(add)
+      awaiting.set(uuid(),event);
+
     return false;
   }
 
+
+  /*
+      Retry
+  */
+
   function retry(app){
-    awaiting.forEach((event,id) => {
-      if(call(event,app,false))
-        awaiting.delete(id);
-    });
+    const test = (event) => call(event,app,false);
+
+    awaiting
+    .filter(test)
+    .allKeys()
+    .forEach((id) => awaiting.delete(id));
   }
 
 
@@ -60,6 +78,6 @@ try {
 
   ⵠ.Flow.check = (event) => events.has(event);
 
-} catch (e){
-  ⵠ.error(e);
-}
+} catch (e){ ⵠ.error(e); }
+
+finish('libs/Flow.js');

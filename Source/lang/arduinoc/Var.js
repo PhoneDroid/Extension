@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/Var.js');
 
   const
     lang = ArduinoC,
@@ -158,3 +157,5 @@ template <typename Input> String cast(String type,Input value){
     return `for(int ${ v } = ${ d ? from : to };${ v } ${ d ? '<' : '>' } ${ d ? to : from };${ v }${ d ? '++' : '--'})`;
   };
 }
+
+finish('lang/arduinoc/Var.js');

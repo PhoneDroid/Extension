@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/Lang.js');
 
   const lang = ArduinoC = {};
 
@@ -120,3 +119,5 @@
     return sign + hashed;
   };
 }
+
+finish('lang/arduinoc/Lang.js');

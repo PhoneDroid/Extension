@@ -9,8 +9,6 @@
 
 
 try {
-  ⵠ.log('Loading addressed/Set.js');
-
 
   ⵠ.addressable('Set')({
     def: () => new Set()
@@ -112,3 +110,5 @@ try {
     };
   });
 } catch (e) { ⵠ.error(e); }
+
+finish('libs/addressed/Set.js');

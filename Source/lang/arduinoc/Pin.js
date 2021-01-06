@@ -8,7 +8,6 @@
 */
 
 {
-  ⵠ.log('Loading lang/arduinoc/Pin.js');
 
   const lang = ArduinoC;
 
@@ -150,3 +149,6 @@ template<typename Type> bool toState(Type state){
 }
   `;
 }
+
+
+finish('lang/arduinoc/Pin.js');

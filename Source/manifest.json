@@ -1,9 +1,9 @@
 {
     "id": "deltablock",
     "extId": "deltablock",
-    "version": "1.0.5",
-    "iconURL": "deltablock/imgs/Covers/Main.png",
-    "coverURL": "deltablock/imgs/Covers/Main.png",
+    "version": "1.0.6",
+    "iconURL": "deltablock/assets/images/Covers/Main.png",
+    "coverURL": "deltablock/assets/images/Covers/Main.png",
     "name": {
       "en": "ⵠBlock"
     },
