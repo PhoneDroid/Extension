@@ -22,4 +22,4 @@
 
 <!--     ⚙    ⚙    ⚙    ⚙    ⚙    ⚙    ⚙    ⚙    ⚙    ⚙    ⚙     -->
 
-[Release]: https://github.com/DeltaBlock/DeltaBlock/tree/main/Releases
+[Release]: https://github.com/DeltaBlock/Extension/tree/main/Releases

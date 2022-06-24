@@ -52,15 +52,15 @@
 
 <!--[ Pages ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-[Install]:  https://deltablock.github.io/DeltaBlock/Documentation/Installation
+[Install]:  https://deltablock.github.io/Extension/Documentation/Installation
 
-[Arduino]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Arduino.html
-[String]: https://deltablock.github.io/DeltaBlock/Documentation/Category/String.html
-[Crypt]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Crypt.html
-[Array]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Array.html
-[Logic]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Logic.html
-[Flow]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Flow.html
-[Math]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Math.html
-[Map]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Map.html
-[Set]: https://deltablock.github.io/DeltaBlock/Documentation/Category/Set.html
+[Arduino]: https://deltablock.github.io/Extension/Documentation/Category/Arduino.html
+[String]: https://deltablock.github.io/Extension/Documentation/Category/String.html
+[Crypt]: https://deltablock.github.io/Extension/Documentation/Category/Crypt.html
+[Array]: https://deltablock.github.io/Extension/Documentation/Category/Array.html
+[Logic]: https://deltablock.github.io/Extension/Documentation/Category/Logic.html
+[Flow]: https://deltablock.github.io/Extension/Documentation/Category/Flow.html
+[Math]: https://deltablock.github.io/Extension/Documentation/Category/Math.html
+[Map]: https://deltablock.github.io/Extension/Documentation/Category/Map.html
+[Set]: https://deltablock.github.io/Extension/Documentation/Category/Set.html
 
